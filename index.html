@@ -3,979 +3,668 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HECHARR Insurance — Protect What Matters</title>
+<title>HECHARR Insurance — Simple, Smart, Secure</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://js.stripe.com/v3/"></script>
 <style>
 :root {
-  --primary: #0D6B6E;
-  --primary-light: #14919B;
-  --primary-dark: #094B4E;
-  --accent: #D4A853;
-  --accent-light: #E8C97A;
-  --accent-dark: #B8912E;
-  --bg: #F7F4EF;
-  --bg-alt: #EDE8E0;
-  --card: #FFFFFF;
-  --dark: #1A1A2E;
-  --dark-mid: #2D2D44;
-  --text: #1A1A2E;
-  --text-mid: #5A5A72;
-  --text-light: #8A8A9E;
-  --border: #E0DCD4;
-  --success: #2E8B57;
-  --danger: #C0392B;
-  --white: #FFFFFF;
-  --display: 'DM Serif Display', serif;
-  --body: 'Plus Jakarta Sans', sans-serif;
-  --heading: 'Playfair Display', serif;
+  --pink: #E91E63;
+  --pink-50: #FCE4EC;
+  --pink-100: #F8BBD0;
+  --pink-200: #F48FB1;
+  --pink-300: #F06292;
+  --pink-400: #EC407A;
+  --pink-600: #D81B60;
+  --pink-700: #C2185B;
+  --pink-800: #AD1457;
+  --pink-900: #880E4F;
+  --pink-glow: rgba(233,30,99,.12);
+  --black: #09090B;
+  --black-2: #111113;
+  --black-3: #18181B;
+  --black-4: #1F1F23;
+  --black-5: #27272A;
+  --gray-1: #3F3F46;
+  --gray-2: #52525B;
+  --gray-3: #71717A;
+  --gray-4: #A1A1AA;
+  --gray-5: #D4D4D8;
+  --gray-6: #E4E4E7;
+  --gray-7: #F4F4F5;
+  --white: #FAFAFA;
+  --pure: #FFFFFF;
+  --success: #10B981;
+  --danger: #EF4444;
+  --heading: 'Fraunces', serif;
+  --body: 'Outfit', sans-serif;
+  --num: 'Chakra Petch', sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+/* Number font utility — applied to all number-heavy elements */
+.n,
+.stat-card-val,.p-price,.q-plan-price,.ci-price,.cf-row,.cf-total,.ck-mini-row,.ck-mini-total,.t-cart-badge,.how-num,.pol-id,.pol-detail{font-family:var(--num) !important}
 html{scroll-behavior:smooth}
-body{font-family:var(--body);background:var(--bg);color:var(--text);overflow-x:hidden}
+body{font-family:var(--body);background:var(--white);color:var(--black);-webkit-font-smoothing:antialiased}
 
-/* ===== NAV ===== */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:var(--dark);border-bottom:3px solid var(--accent);transition:all .3s}
-.nav-logo{font-family:var(--display);font-size:28px;color:var(--white);letter-spacing:2px;cursor:pointer}
-.nav-logo span{color:var(--accent)}
-.nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{text-decoration:none;color:rgba(255,255,255,.7);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:var(--accent)}
-.nav-right{display:flex;align-items:center;gap:10px}
-.btn-nav{padding:8px 20px;border:2px solid var(--accent);background:transparent;color:var(--accent);border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:var(--body);letter-spacing:2px;text-transform:uppercase}
-.btn-nav:hover,.btn-nav.filled{background:var(--accent);color:var(--dark);border-color:var(--accent)}
-.btn-nav.filled:hover{background:var(--accent-light)}
-.user-menu{position:relative}
-.user-btn{display:flex;align-items:center;gap:7px;padding:8px 14px;background:var(--dark-mid);border:1px solid rgba(255,255,255,.1);border-radius:4px;font-family:var(--body);font-size:12px;font-weight:600;color:rgba(255,255,255,.8);cursor:pointer;transition:all .2s}
-.user-btn:hover{background:var(--primary);color:var(--white)}
-.user-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:var(--dark);border-radius:4px;box-shadow:0 12px 40px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);min-width:180px;overflow:hidden;display:none;z-index:999}
-.user-dropdown.open{display:block}
-.user-dropdown-item{padding:12px 16px;font-size:13px;color:rgba(255,255,255,.8);cursor:pointer;transition:background .15s;font-weight:600}
-.user-dropdown-item:hover{background:var(--dark-mid)}
-.user-dropdown-item.danger{color:var(--danger)}
+/* ===== TOPBAR ===== */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;display:flex;align-items:center;padding:0 40px;background:rgba(9,9,11,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.topbar-logo{font-family:var(--heading);font-size:22px;color:var(--pure);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px}
+.topbar-logo .logo-mark{width:28px;height:28px;background:var(--pink);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.topbar-logo .logo-mark svg{width:16px;height:16px;stroke:white;fill:none;stroke-width:2}
+.topbar-nav{display:flex;gap:28px;margin-left:48px;list-style:none}
+.topbar-nav a{text-decoration:none;color:var(--gray-3);font-size:13px;font-weight:500;transition:color .15s}
+.topbar-nav a:hover{color:var(--pure)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.t-btn{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--body);transition:all .15s;border:none}
+.t-btn-ghost{background:transparent;color:var(--gray-4);border:1px solid var(--black-5)}
+.t-btn-ghost:hover{border-color:var(--pink);color:var(--pink)}
+.t-btn-pink{background:var(--pink);color:white;box-shadow:0 2px 8px rgba(233,30,99,.25)}
+.t-btn-pink:hover{background:var(--pink-600);transform:translateY(-1px)}
+.t-cart{position:relative;width:36px;height:36px;border-radius:8px;background:var(--black-3);border:1px solid var(--black-5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.t-cart:hover{border-color:var(--pink)}
+.t-cart svg{width:16px;height:16px;stroke:var(--gray-4);fill:none;stroke-width:2}
+.t-cart-badge{position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:var(--pink);color:white;border-radius:50%;font-size:9px;font-weight:800;font-family:var(--num);display:none;align-items:center;justify-content:center;border:2px solid var(--black)}
+.user-pill{display:flex;align-items:center;gap:6px;padding:5px 12px 5px 5px;background:var(--black-3);border:1px solid var(--black-5);border-radius:100px;cursor:pointer;transition:all .15s}
+.user-pill:hover{border-color:var(--pink)}
+.user-pill-avatar{width:26px;height:26px;background:var(--pink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white}
+.user-pill-name{font-size:12px;color:var(--gray-4);font-weight:500}
+.user-dd{position:absolute;top:calc(100% + 6px);right:0;background:var(--black-2);border:1px solid var(--black-5);border-radius:10px;min-width:160px;overflow:hidden;display:none;box-shadow:0 12px 36px rgba(0,0,0,.5);z-index:99}
+.user-dd.open{display:block}
+.user-dd-item{padding:10px 14px;font-size:13px;color:var(--gray-4);cursor:pointer;transition:all .1s;font-weight:500}
+.user-dd-item:hover{background:var(--black-4);color:var(--pure)}
+.user-dd-item.red{color:var(--danger)}
 
-/* ===== HAMBURGER ===== */
-.hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;flex-direction:column;gap:5px}
-.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all .3s}
-.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-.hamburger.open span:nth-child(2){opacity:0}
-.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--dark);z-index:999;padding:80px 24px 32px;flex-direction:column;overflow-y:auto;transform:translateY(-100%);transition:transform .35s cubic-bezier(.16,1,.3,1)}
-.mobile-menu.open{transform:translateY(0)}
-.mobile-menu-links{list-style:none;margin-bottom:32px}
-.mobile-menu-links li{border-bottom:1px solid rgba(255,255,255,.1)}
-.mobile-menu-links a{display:block;padding:18px 0;color:var(--white);text-decoration:none;font-family:var(--display);font-size:24px;letter-spacing:2px;transition:color .2s}
-.mobile-menu-links a:hover{color:var(--accent)}
-.mobile-auth-btns{display:flex;gap:10px;margin-top:16px}
-.mobile-auth-btns button{flex:1;padding:14px;border-radius:4px;font-family:var(--body);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
-.mobile-auth-btns .mob-login{background:transparent;border:2px solid var(--accent);color:var(--accent)}
-.mobile-auth-btns .mob-signup{background:var(--accent);border:2px solid var(--accent);color:var(--dark)}
+/* Mobile */
+.m-toggle{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:4px}
+.m-toggle span{width:18px;height:1.5px;background:var(--gray-4);border-radius:2px;transition:all .3s}
+.m-toggle.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.m-toggle.open span:nth-child(2){opacity:0}
+.m-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.m-menu{display:none;position:fixed;inset:0;background:var(--black);z-index:999;padding:72px 24px 32px;flex-direction:column;overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.m-menu.open{transform:translateX(0)}
+.m-menu-links{list-style:none;margin-bottom:32px}
+.m-menu-links a{display:block;padding:16px 0;color:var(--pure);text-decoration:none;font-size:20px;font-weight:600;border-bottom:1px solid var(--black-4)}
+.m-menu-btns{display:flex;gap:8px;margin-top:16px}
+.m-menu-btns button{flex:1;padding:14px;border-radius:10px;font-family:var(--body);font-size:13px;font-weight:700;cursor:pointer}
+.m-btn-out{background:transparent;border:1.5px solid var(--pink);color:var(--pink)}
+.m-btn-fill{background:var(--pink);border:1.5px solid var(--pink);color:white}
 
-/* ===== HERO ===== */
-.hero{min-height:100vh;padding:140px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%)}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%, rgba(13,107,110,.3) 0%,transparent 60%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--primary),var(--accent))}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);padding:7px 18px;border-radius:4px;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px}
-.hero-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
-.hero h1{font-family:var(--heading);font-size:clamp(48px,5.5vw,80px);font-weight:900;line-height:1.05;color:var(--white);margin-bottom:24px}
-.hero h1 em{font-style:italic;color:var(--accent)}
-.hero-desc{font-size:17px;line-height:1.8;color:rgba(255,255,255,.6);max-width:460px;margin-bottom:40px}
-.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
-.btn-primary{padding:16px 40px;background:var(--accent);color:var(--dark);border:none;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--body);transition:all .25s;box-shadow:0 8px 24px rgba(212,168,83,.3);letter-spacing:2px;text-transform:uppercase}
-.btn-primary:hover{background:var(--accent-light);transform:translateY(-2px);box-shadow:0 14px 36px rgba(212,168,83,.4)}
-.btn-secondary{padding:16px 36px;background:transparent;color:var(--white);border:2px solid rgba(255,255,255,.2);border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--body);transition:all .25s;letter-spacing:2px;text-transform:uppercase}
-.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
-.hero-stats{display:flex;gap:40px;margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,.1)}
-.stat-num{font-family:var(--heading);font-size:42px;font-weight:900;color:var(--accent);line-height:1}
-.stat-lbl{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;margin-top:6px;letter-spacing:1px;text-transform:uppercase}
+/* ===== HERO — full-dark split ===== */
+.hero{min-height:100vh;background:var(--black);display:flex;flex-direction:column;justify-content:center;padding:100px 40px 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-20%;width:80%;height:120%;background:radial-gradient(ellipse,rgba(233,30,99,.06) 0%,transparent 70%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;max-width:1240px;margin:0 auto;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:var(--black-3);border:1px solid var(--black-5);border-radius:100px;font-size:11px;font-weight:600;color:var(--gray-4);margin-bottom:24px}
+.hero-badge-dot{width:6px;height:6px;background:var(--pink);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:var(--heading);font-size:clamp(42px,5.5vw,72px);font-weight:900;line-height:1.05;color:var(--pure);margin-bottom:20px}
+.hero h1 span{color:var(--pink);font-style:italic}
+.hero-p{font-size:17px;line-height:1.7;color:var(--gray-3);max-width:440px;margin-bottom:36px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.hero-btn-main{padding:14px 32px;background:var(--pink);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--body);transition:all .2s;box-shadow:0 4px 16px rgba(233,30,99,.3)}
+.hero-btn-main:hover{background:var(--pink-600);transform:translateY(-2px);box-shadow:0 8px 24px rgba(233,30,99,.4)}
+.hero-btn-sec{padding:14px 28px;background:var(--black-3);color:var(--gray-4);border:1px solid var(--black-5);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--body);transition:all .2s}
+.hero-btn-sec:hover{border-color:var(--pink);color:var(--pink)}
 
-.hero-visual{display:flex;justify-content:center;align-items:center;position:relative}
-.hero-shield{width:300px;height:340px;background:linear-gradient(160deg,var(--primary-dark),var(--primary));border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1);animation:float 5s ease-in-out infinite;border:2px solid rgba(255,255,255,.1)}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-12px) rotate(.5deg)}}
-.shield-icon{font-size:80px;margin-bottom:16px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))}
-.shield-brand{font-family:var(--display);font-size:32px;color:var(--white);letter-spacing:4px}
-.shield-sub{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:4px;text-transform:uppercase;margin-top:4px}
-.float-badge{position:absolute;background:var(--dark);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 16px;box-shadow:0 12px 32px rgba(0,0,0,.3);font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;animation:float 3.5s ease-in-out infinite;color:rgba(255,255,255,.8)}
-.fb1{top:20px;right:-56px;animation-delay:.5s}
-.fb2{bottom:40px;left:-68px;animation-delay:1s}
-.fb3{top:150px;left:-76px;animation-delay:1.5s}
+/* Hero right — stats cards stack */
+.hero-right{display:flex;flex-direction:column;gap:14px}
+.stat-row{display:flex;gap:14px}
+.stat-card{flex:1;background:var(--black-2);border:1px solid var(--black-4);border-radius:14px;padding:22px;transition:all .3s;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:0 2px 2px 0}
+.stat-card.s1::after{background:var(--pink)}
+.stat-card.s2::after{background:var(--pink-300)}
+.stat-card.s3::after{background:var(--pink-700)}
+.stat-card.s4::after{background:var(--pink-200)}
+.stat-card:hover{border-color:var(--pink);transform:translateY(-2px)}
+.stat-card-val{font-family:var(--num);font-size:32px;font-weight:700;color:var(--pure);margin-bottom:2px;letter-spacing:.5px}
+.stat-card-lbl{font-size:11px;color:var(--gray-3);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.stat-card-icon{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(233,30,99,.08)}
+.stat-card-icon svg{width:16px;height:16px;stroke:var(--pink);fill:none;stroke-width:1.5}
 
-/* ===== MARQUEE ===== */
-.marquee{background:var(--primary);padding:14px 0;overflow:hidden;border-top:2px solid var(--accent);border-bottom:2px solid var(--accent)}
-.marquee-track{display:flex;gap:48px;animation:marquee 22s linear infinite;white-space:nowrap}
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.marquee-item{color:var(--white);font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:14px}
-.mdot{width:5px;height:5px;background:var(--accent);border-radius:50%}
+/* ===== CATEGORIES — horizontal tab strip ===== */
+.cat-section{padding:80px 40px;max-width:1240px;margin:0 auto}
+.cat-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;flex-wrap:wrap;gap:16px}
+.cat-header h2{font-family:var(--heading);font-size:clamp(28px,3.5vw,44px);font-weight:900;line-height:1.1}
+.cat-header h2 span{color:var(--pink);font-style:italic}
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.cat-tab{padding:8px 18px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--gray-6);color:var(--gray-2);background:var(--pure);transition:all .15s}
+.cat-tab:hover{border-color:var(--pink-200);color:var(--pink)}
+.cat-tab.active{background:var(--pink);color:white;border-color:var(--pink)}
 
-/* ===== SECTIONS ===== */
-.section{padding:100px 48px}
-.section-header{text-align:center;margin-bottom:64px}
-.section-tag{font-size:10px;font-weight:700;color:var(--primary);letter-spacing:5px;text-transform:uppercase;margin-bottom:14px}
-.section-title{font-family:var(--heading);font-size:clamp(36px,4vw,56px);font-weight:900;color:var(--text);line-height:1.1}
-.section-title em{color:var(--primary);font-style:italic}
-.section-desc{font-size:15px;color:var(--text-mid);margin-top:16px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7}
+/* Product cards — clean */
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.p-card{background:var(--pure);border:1.5px solid var(--gray-6);border-radius:16px;padding:28px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden}
+.p-card:hover{border-color:var(--pink);box-shadow:0 12px 36px rgba(233,30,99,.06);transform:translateY(-3px)}
+.p-card-badge{position:absolute;top:16px;right:16px;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.p-card-badge.pop{background:var(--pink-50);color:var(--pink-700)}
+.p-card-badge.new{background:var(--black);color:var(--pure)}
+.p-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.p-icon svg{width:26px;height:26px;stroke-width:1.5;fill:none}
+.p-card-name{font-family:var(--heading);font-size:20px;font-weight:700;color:var(--black);margin-bottom:6px}
+.p-card-desc{font-size:13px;color:var(--gray-3);line-height:1.55;margin-bottom:14px;min-height:40px}
+.p-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px}
+.p-tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;background:var(--gray-7);color:var(--gray-2)}
+.p-card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--gray-6)}
+.p-price{font-family:var(--num);font-size:22px;font-weight:700;color:var(--pink);letter-spacing:.5px}
+.p-price-sub{font-size:10px;color:var(--gray-3);font-family:var(--body);font-weight:500}
+.p-btn{padding:8px 16px;background:var(--black);color:var(--pure);border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--body);transition:all .15s}
+.p-btn:hover{background:var(--pink)}
 
-/* ===== INSURANCE PRODUCTS GRID ===== */
-.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
-.product-card{background:var(--card);border-radius:12px;overflow:hidden;transition:all .3s;border:2px solid var(--border);cursor:pointer;position:relative}
-.product-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(13,107,110,.12);border-color:var(--primary)}
-.product-icon-wrap{height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.product-emoji{font-size:64px;transition:transform .3s}
-.product-card:hover .product-emoji{transform:scale(1.1)}
-.product-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:var(--white);font-size:9px;font-weight:700;padding:4px 12px;border-radius:4px;letter-spacing:2px;text-transform:uppercase}
-.product-info{padding:24px}
-.product-name{font-family:var(--heading);font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px}
-.product-desc{font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:16px}
-.product-features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
-.feature-pill{background:rgba(13,107,110,.08);color:var(--primary);font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;letter-spacing:.5px}
-.product-footer{display:flex;align-items:center;justify-content:space-between}
-.product-price{font-family:var(--heading);font-size:24px;font-weight:700;color:var(--primary)}
-.product-price-sub{font-size:10px;color:var(--text-light);font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.btn-quote{padding:10px 22px;background:var(--primary);color:var(--white);border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--body);transition:all .2s;letter-spacing:1px;text-transform:uppercase}
-.btn-quote:hover{background:var(--primary-dark);transform:scale(1.03)}
+/* ===== HOW IT WORKS — 3 step horizontal ===== */
+.how-section{background:var(--black);padding:80px 40px}
+.how-inner{max-width:1240px;margin:0 auto}
+.how-header{margin-bottom:48px}
+.how-header h2{font-family:var(--heading);font-size:clamp(28px,3.5vw,44px);font-weight:900;color:var(--pure)}
+.how-header h2 span{color:var(--pink);font-style:italic}
+.how-header p{color:var(--gray-3);font-size:15px;margin-top:8px}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.how-step{background:var(--black-2);border:1px solid var(--black-4);border-radius:16px;padding:32px;transition:all .3s;position:relative}
+.how-step:hover{border-color:var(--pink);transform:translateY(-3px)}
+.how-num{font-family:var(--num);font-size:48px;font-weight:700;color:var(--pink);opacity:.15;position:absolute;top:16px;right:20px;letter-spacing:1px}
+.how-step-icon{width:48px;height:48px;background:rgba(233,30,99,.08);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.how-step-icon svg{width:24px;height:24px;stroke:var(--pink);fill:none;stroke-width:1.5}
+.how-step-title{font-family:var(--heading);font-size:20px;font-weight:700;color:var(--pure);margin-bottom:6px}
+.how-step-desc{font-size:13px;color:var(--gray-3);line-height:1.6}
 
-/* ===== WHY CHOOSE US ===== */
-.why-section{background:var(--dark);color:var(--white);padding:100px 48px;position:relative}
-.why-section::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(255,255,255,.02) 60px,rgba(255,255,255,.02) 61px);pointer-events:none}
-.why-section .section-tag{color:var(--accent)}
-.why-section .section-title{color:var(--white)}
-.why-section .section-title em{color:var(--accent)}
-.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1200px;margin:0 auto}
-.why-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:32px;transition:all .3s}
-.why-card:hover{background:rgba(13,107,110,.15);border-color:rgba(13,107,110,.3);transform:translateY(-4px)}
-.why-emoji{font-size:40px;margin-bottom:16px}
-.why-title{font-family:var(--heading);font-size:18px;font-weight:700;margin-bottom:8px}
-.why-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+/* ===== TRUST BAR ===== */
+.trust-bar{padding:40px;border-top:1px solid var(--gray-6);border-bottom:1px solid var(--gray-6)}
+.trust-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;color:var(--gray-2);font-size:13px;font-weight:600}
+.trust-item svg{width:20px;height:20px;stroke:var(--pink);fill:none;stroke-width:1.5}
 
-/* ===== REVIEWS ===== */
-.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1200px;margin:0 auto}
-.review-card{background:var(--card);border-radius:12px;padding:28px;border:2px solid var(--border);transition:all .3s}
-.review-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.08);border-color:var(--accent)}
-.review-stars{color:var(--accent);font-size:18px;margin-bottom:12px}
-.review-text{font-size:14px;line-height:1.75;color:var(--text-mid);margin-bottom:20px}
-.review-author{display:flex;align-items:center;gap:12px}
-.review-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;flex-shrink:0}
-.review-name{font-weight:700;font-size:13px;color:var(--text)}
-.review-verified{font-size:10px;color:var(--success);font-weight:700;margin-top:2px;letter-spacing:1px;text-transform:uppercase}
+/* ===== TESTIMONIALS — horizontal scroll ===== */
+.test-section{padding:80px 40px;max-width:1240px;margin:0 auto}
+.test-header{margin-bottom:36px}
+.test-header h2{font-family:var(--heading);font-size:clamp(28px,3.5vw,44px);font-weight:900}
+.test-header h2 span{color:var(--pink);font-style:italic}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.test-card{background:var(--pure);border:1.5px solid var(--gray-6);border-radius:16px;padding:28px;transition:all .25s}
+.test-card:hover{border-color:var(--pink-200);transform:translateY(-2px)}
+.test-stars{color:var(--pink);font-size:14px;margin-bottom:12px;letter-spacing:2px}
+.test-text{font-size:14px;color:var(--gray-2);line-height:1.65;margin-bottom:18px}
+.test-author{display:flex;align-items:center;gap:10px}
+.test-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0}
+.test-name{font-weight:700;font-size:13px;color:var(--black)}
+.test-verified{font-size:10px;color:var(--success);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
 
-/* ===== CTA BANNER ===== */
-.cta-banner{background:linear-gradient(135deg,var(--primary),var(--primary-dark));padding:80px 48px;text-align:center;position:relative;overflow:hidden}
-.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, rgba(212,168,83,.15) 0%,transparent 60%);pointer-events:none}
-.cta-banner h2{font-family:var(--heading);font-size:clamp(32px,4vw,52px);font-weight:900;color:var(--white);margin-bottom:16px}
-.cta-banner p{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto}
-.cta-banner .btn-primary{font-size:14px;padding:18px 48px}
+/* ===== CTA ===== */
+.cta{background:var(--black);padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:50%;left:50%;width:600px;height:600px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(233,30,99,.08) 0%,transparent 70%);pointer-events:none}
+.cta h2{font-family:var(--heading);font-size:clamp(32px,4vw,52px);font-weight:900;color:var(--pure);margin-bottom:12px}
+.cta h2 span{color:var(--pink);font-style:italic}
+.cta p{color:var(--gray-3);font-size:16px;margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto}
 
 /* ===== FAQ ===== */
-.faq-section{padding:100px 48px;background:var(--bg-alt)}
-.faq-list{max-width:720px;margin:0 auto}
-.faq-item{border-bottom:2px solid var(--border);overflow:hidden}
-.faq-question{padding:22px 0;font-weight:700;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--text);transition:color .2s;letter-spacing:.5px}
-.faq-question:hover{color:var(--primary)}
-.faq-answer{max-height:0;overflow:hidden;transition:max-height .35s ease, padding .35s;font-size:14px;color:var(--text-mid);line-height:1.7}
-.faq-item.open .faq-answer{max-height:200px;padding-bottom:22px}
+.faq-section{padding:80px 40px;max-width:740px;margin:0 auto}
+.faq-section h2{font-family:var(--heading);font-size:clamp(28px,3.5vw,44px);font-weight:900;text-align:center;margin-bottom:40px}
+.faq-section h2 span{color:var(--pink);font-style:italic}
+.faq-item{border:1.5px solid var(--gray-6);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all .2s}
+.faq-item:hover{border-color:var(--pink-200)}
+.faq-item.open{border-color:var(--pink)}
+.faq-q{padding:18px 20px;font-weight:600;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--black)}
+.faq-q:hover{color:var(--pink)}
+.faq-arrow{font-size:18px;color:var(--gray-4);transition:transform .3s}
+.faq-item.open .faq-arrow{transform:rotate(180deg);color:var(--pink)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;font-size:14px;color:var(--gray-2);line-height:1.65;padding:0 20px}
+.faq-item.open .faq-a{max-height:200px;padding:0 20px 18px}
 
 /* ===== FOOTER ===== */
-footer{background:var(--dark);padding:60px 48px 30px;text-align:center;color:rgba(255,255,255,.4);font-size:12px;line-height:1.8}
-.footer-logo{font-family:var(--display);font-size:32px;color:var(--white);letter-spacing:4px;margin-bottom:8px}
-.footer-logo span{color:var(--accent)}
-.footer-links{display:flex;justify-content:center;gap:24px;margin:20px 0;flex-wrap:wrap}
-.footer-links a{color:rgba(255,255,255,.5);text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:color .2s}
-.footer-links a:hover{color:var(--accent)}
-.footer-disclaimer{margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);font-size:11px}
+footer{background:var(--black);padding:48px 40px 24px;border-top:1px solid var(--black-4)}
+.foot-inner{max-width:1240px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:32px}
+.foot-brand{font-family:var(--heading);font-size:22px;color:var(--pure);font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.foot-brand .logo-mark{width:28px;height:28px;background:var(--pink);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.foot-brand .logo-mark svg{width:16px;height:16px;stroke:white;fill:none;stroke-width:2}
+.foot-tagline{font-size:13px;color:var(--gray-3);max-width:260px;line-height:1.5}
+.foot-links{display:flex;gap:48px}
+.foot-col-title{font-size:11px;font-weight:700;color:var(--gray-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.foot-col a{display:block;font-size:13px;color:var(--gray-4);text-decoration:none;padding:3px 0;transition:color .15s}
+.foot-col a:hover{color:var(--pink)}
+.foot-bottom{max-width:1240px;margin:24px auto 0;padding-top:20px;border-top:1px solid var(--black-4);font-size:11px;color:var(--gray-3);text-align:center;line-height:1.6}
+
+/* ===== CART DRAWER ===== */
+.cart-overlay{position:fixed;inset:0;background:rgba(9,9,11,.6);z-index:1100;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px)}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-drawer{position:fixed;top:0;right:0;width:380px;height:100%;background:var(--white);z-index:1101;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-left:1px solid var(--gray-6)}
+.cart-drawer.open{transform:translateX(0)}
+.cart-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--gray-6)}
+.cart-hdr-title{font-family:var(--heading);font-size:18px;font-weight:700}
+.cart-hdr-close{width:28px;height:28px;border:1px solid var(--gray-6);background:none;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gray-3);transition:all .15s}
+.cart-hdr-close:hover{background:var(--pink);color:white;border-color:var(--pink)}
+.cart-body{flex:1;overflow-y:auto;padding:12px 20px}
+.cart-empty{text-align:center;padding:48px 0;color:var(--gray-3)}
+.cart-empty svg{width:40px;height:40px;stroke:var(--pink-200);fill:none;stroke-width:1;margin-bottom:12px}
+.cart-empty-title{font-family:var(--heading);font-size:16px;color:var(--black);margin-bottom:4px;font-weight:600}
+.cart-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-7);align-items:center}
+.ci-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--pink-50)}
+.ci-icon svg{width:20px;height:20px;stroke:var(--pink);fill:none;stroke-width:1.5}
+.ci-name{font-weight:600;font-size:13px;color:var(--black)}
+.ci-plan{font-size:11px;color:var(--gray-3)}
+.ci-price{font-weight:700;font-size:13px;font-family:var(--num);color:var(--pink);margin-left:auto;white-space:nowrap}
+.ci-rm{cursor:pointer;color:var(--gray-4);font-size:10px;font-weight:600;transition:color .15s;margin-left:6px}
+.ci-rm:hover{color:var(--danger)}
+.cart-foot{padding:14px 20px;border-top:1px solid var(--gray-6)}
+.cf-row{display:flex;justify-content:space-between;font-size:12px;color:var(--gray-3);margin-bottom:4px;font-weight:500;font-family:var(--num)}
+.cf-total{display:flex;justify-content:space-between;font-size:15px;font-weight:700;font-family:var(--num);color:var(--black);margin:8px 0}
 
 /* ===== MODALS ===== */
-.modal-overlay{position:fixed;inset:0;background:rgba(26,26,46,.7);z-index:1200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:20px}
-.modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:12px;padding:40px;width:100%;max-width:460px;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.3);animation:modalIn .3s cubic-bezier(.16,1,.3,1);border-top:4px solid var(--primary)}
-.modal.wide{max-width:560px}
-@keyframes modalIn{from{transform:scale(.94) translateY(16px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-.modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border:2px solid var(--border);background:transparent;border-radius:8px;cursor:pointer;font-size:14px;color:var(--text-light);display:flex;align-items:center;justify-content:center;transition:all .2s}
-.modal-close:hover{background:var(--primary);color:var(--white);border-color:var(--primary)}
-.modal-title{font-family:var(--heading);font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px}
-.modal-sub{font-size:14px;color:var(--text-mid);margin-bottom:28px}
-.modal-link{color:var(--primary);cursor:pointer;font-weight:700;text-decoration:none}
-.modal-link:hover{text-decoration:underline}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:10px;font-weight:700;color:var(--text-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
-.form-input{width:100%;padding:12px 15px;border:2px solid var(--border);border-radius:8px;font-size:14px;font-family:var(--body);color:var(--text);background:var(--white);outline:none;transition:border-color .2s}
-.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,107,110,.1)}
-.form-input::placeholder{color:var(--text-light)}
-.btn-modal{width:100%;padding:14px;background:var(--primary);color:var(--white);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--body);transition:all .2s;margin-top:8px;letter-spacing:1px;text-transform:uppercase}
-.btn-modal:hover{background:var(--primary-dark);transform:translateY(-1px)}
-.btn-modal:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.divider{text-align:center;color:var(--text-light);font-size:12px;margin:18px 0;position:relative;letter-spacing:2px;text-transform:uppercase;font-weight:600}
-.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
-.divider::before{left:0}.divider::after{right:0}
-.error-msg{color:var(--danger);font-size:13px;margin-top:8px;text-align:center;font-weight:600}
-.success-msg{color:var(--success);font-size:13px;margin-top:8px;text-align:center;font-weight:600}
+.modal-bg{position:fixed;inset:0;background:rgba(9,9,11,.7);z-index:1200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--pure);border-radius:16px;padding:32px;width:100%;max-width:420px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.25);animation:mIn .25s cubic-bezier(.4,0,.2,1)}
+.modal.w{max-width:520px}
+@keyframes mIn{from{transform:scale(.96) translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.modal-x{position:absolute;top:12px;right:12px;width:28px;height:28px;border:1px solid var(--gray-6);background:none;border-radius:6px;cursor:pointer;font-size:12px;color:var(--gray-3);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.modal-x:hover{background:var(--pink);color:white;border-color:var(--pink)}
+.modal h3{font-family:var(--heading);font-size:22px;font-weight:700;margin-bottom:4px}
+.modal .m-sub{font-size:13px;color:var(--gray-3);margin-bottom:20px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.f-group{margin-bottom:12px}
+.f-label{display:block;font-size:10px;font-weight:600;color:var(--gray-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.f-input{width:100%;padding:10px 12px;border:1.5px solid var(--gray-6);border-radius:8px;font-size:13px;font-family:var(--body);color:var(--black);background:var(--pure);outline:none;transition:border-color .15s}
+.f-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-glow)}
+.f-input::placeholder{color:var(--gray-4)}
+.btn-full{width:100%;padding:12px;background:var(--pink);color:white;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--body);transition:all .15s;margin-top:4px}
+.btn-full:hover{background:var(--pink-700)}
+.btn-full:disabled{opacity:.5;cursor:not-allowed}
+.f-divider{text-align:center;color:var(--gray-4);font-size:11px;margin:14px 0;position:relative;font-weight:600}
+.f-divider::before,.f-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--gray-6)}
+.f-divider::before{left:0}.f-divider::after{right:0}
+.f-error{color:var(--danger);font-size:12px;margin-top:6px;text-align:center;font-weight:600}
+.f-link{color:var(--pink);cursor:pointer;font-weight:700;text-decoration:none}
+.f-link:hover{text-decoration:underline}
 
-/* ===== CHECKOUT ===== */
-.checkout-steps{display:flex;gap:6px;margin-bottom:24px}
-.ck-step{flex:1;text-align:center;padding:8px 6px;font-size:10px;font-weight:700;border-radius:4px;background:var(--bg-alt);color:var(--text-light);transition:all .2s;letter-spacing:1px;text-transform:uppercase}
-.ck-step.active{background:var(--primary);color:var(--white)}
-.ck-step.done{background:rgba(46,139,87,.15);color:var(--success)}
-#stripe-card-element{padding:14px 15px;background:var(--white);border:2px solid var(--border);border-radius:8px;min-height:48px;transition:border-color .2s}
-#stripe-card-element.StripeElement--focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,107,110,.1)}
-#stripe-card-errors{color:var(--danger);font-size:12px;margin-top:6px;min-height:16px}
+/* Checkout */
+.ck-steps{display:flex;gap:4px;margin-bottom:16px}
+.ck-step{flex:1;text-align:center;padding:6px;font-size:10px;font-weight:700;border-radius:6px;background:var(--gray-7);color:var(--gray-3);letter-spacing:.5px;text-transform:uppercase}
+.ck-step.active{background:var(--pink);color:white}
+.ck-step.done{background:rgba(16,185,129,.1);color:var(--success)}
+.ck-mini{background:var(--gray-7);border-radius:10px;padding:12px;margin-bottom:14px}
+.ck-mini-row{display:flex;justify-content:space-between;font-size:12px;color:var(--gray-3);margin-bottom:2px;font-family:var(--num)}
+.ck-mini-total{display:flex;justify-content:space-between;font-size:14px;font-weight:700;font-family:var(--num);color:var(--black);margin-top:6px;padding-top:6px;border-top:1px solid var(--gray-6)}
 
-/* ===== POLICY CARDS IN MODAL ===== */
-.policy-card{background:var(--bg);border-radius:8px;padding:16px;margin-bottom:12px;border:1px solid var(--border)}
-.policy-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.policy-id{font-weight:700;font-size:14px;color:var(--primary)}
-.policy-status{font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:1px;text-transform:uppercase}
-.policy-status.active{background:rgba(46,139,87,.12);color:var(--success)}
-.policy-status.expired{background:rgba(192,57,43,.1);color:var(--danger)}
-.policy-detail{font-size:13px;color:var(--text-mid);margin-bottom:4px}
+#stripe-card-element{padding:11px 12px;border:1.5px solid var(--gray-6);border-radius:8px;min-height:42px;transition:border-color .15s}
+#stripe-card-element.StripeElement--focus{border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-glow)}
+#stripe-card-errors{color:var(--danger);font-size:11px;margin-top:4px;min-height:14px}
 
-/* ===== QUOTE RESULT ===== */
-.quote-plans{display:grid;gap:12px;margin-top:20px}
-.quote-plan{border:2px solid var(--border);border-radius:8px;padding:20px;cursor:pointer;transition:all .2s}
-.quote-plan:hover,.quote-plan.selected{border-color:var(--primary);background:rgba(13,107,110,.04)}
-.quote-plan-name{font-family:var(--heading);font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
-.quote-plan-price{font-family:var(--heading);font-size:28px;font-weight:900;color:var(--primary)}
-.quote-plan-price span{font-size:14px;color:var(--text-mid);font-family:var(--body);font-weight:400}
-.quote-plan-features{margin-top:8px}
-.quote-plan-features div{font-size:12px;color:var(--text-mid);padding:2px 0}
+/* Quote */
+.q-plans{display:grid;gap:8px;margin-top:12px}
+.q-plan{border:1.5px solid var(--gray-6);border-radius:10px;padding:14px;cursor:pointer;transition:all .15s}
+.q-plan:hover,.q-plan.sel{border-color:var(--pink);background:var(--pink-50)}
+.q-plan-top{display:flex;justify-content:space-between;align-items:center}
+.q-plan-name{font-family:var(--heading);font-size:15px;font-weight:700;color:var(--black)}
+.q-plan-price{font-family:var(--num);font-size:18px;font-weight:700;color:var(--pink);letter-spacing:.5px}
+.q-plan-price span{font-size:10px;color:var(--gray-3);font-family:var(--body)}
+.q-plan-cover{font-size:10px;color:var(--gray-3);font-weight:500;margin-top:1px}
+.q-plan-tags{margin-top:6px;display:flex;flex-wrap:wrap;gap:3px}
+.q-plan-tags span{font-size:9px;color:var(--pink-700);background:var(--pink-50);padding:2px 6px;border-radius:3px;font-weight:600}
 
-/* ===== TOAST ===== */
-#toastContainer{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}
-.toast{display:flex;align-items:center;gap:10px;background:var(--dark);color:var(--white);padding:14px 20px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 12px 32px rgba(0,0,0,.2);animation:toastIn .3s cubic-bezier(.16,1,.3,1);border-left:4px solid var(--accent)}
-.toast.success{border-left-color:var(--success)}
-.toast.error{border-left-color:var(--danger)}
-@keyframes toastIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+/* Policy */
+.pol-card{background:var(--gray-7);border-radius:10px;padding:14px;margin-bottom:8px}
+.pol-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pol-id{font-weight:700;font-size:13px;color:var(--pink)}
+.pol-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.5px}
+.pol-badge.active{background:rgba(16,185,129,.1);color:var(--success)}
+.pol-badge.expired{background:rgba(239,68,68,.1);color:var(--danger)}
+.pol-detail{font-size:12px;color:var(--gray-2);margin-bottom:2px}
 
-.spinner{display:inline-flex;gap:4px;align-items:center;height:18px}
-.spinner span{width:6px;height:6px;background:currentColor;border-radius:50%;animation:spin-dot .8s ease-in-out infinite}
-.spinner span:nth-child(2){animation-delay:.15s}
-.spinner span:nth-child(3){animation-delay:.3s}
-@keyframes spin-dot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+/* Toast */
+#toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:6px}
+.toast{display:flex;align-items:center;gap:8px;background:var(--black);color:var(--pure);padding:12px 16px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:toastIn .25s;border-left:3px solid var(--pink)}
+.toast.ok{border-left-color:var(--success)}
+.toast.err{border-left-color:var(--danger)}
+@keyframes toastIn{from{transform:translateX(100%);opacity:0}to{transform:none;opacity:1}}
+.spinner{display:inline-flex;gap:3px;align-items:center;height:16px}
+.spinner i{width:4px;height:4px;background:currentColor;border-radius:50%;animation:sd .8s ease-in-out infinite}
+.spinner i:nth-child(2){animation-delay:.15s}
+.spinner i:nth-child(3){animation-delay:.3s}
+@keyframes sd{0%,80%,100%{transform:scale(.4);opacity:.3}40%{transform:scale(1);opacity:1}}
 
-/* ===== RESPONSIVE ===== */
 @media(max-width:900px){
-  nav{padding:10px 16px}
-  .nav-logo{font-size:22px}
-  .nav-links{display:none}
-  .hamburger{display:flex}
-  .mobile-menu{display:flex}
-  #authButtons{display:none !important}
-  .hero{grid-template-columns:1fr;padding:100px 20px 50px;text-align:center}
-  .hero h1{font-size:clamp(36px,10vw,52px)}
-  .hero-visual{display:none}
-  .hero-cta{justify-content:center}
-  .hero-stats{justify-content:center;gap:20px}
-  .hero-desc{margin:0 auto 40px}
-  .section{padding:60px 20px}
-  .products-grid{grid-template-columns:1fr}
-  .product-card{max-width:420px;margin:0 auto;width:100%}
-  .why-grid{grid-template-columns:1fr 1fr;gap:16px}
-  .reviews-grid{grid-template-columns:1fr}
-  .faq-section{padding:60px 20px}
-  footer{padding:40px 20px 24px}
-  .modal{padding:28px 20px;margin:12px;max-width:100%}
-  .form-row{grid-template-columns:1fr}
-  .cta-banner{padding:60px 20px}
+  .topbar{padding:0 16px}
+  .topbar-nav{display:none}
+  .m-toggle{display:flex}
+  .m-menu{display:flex}
+  #authBtns{display:none !important}
+  .hero{padding:80px 20px 50px}
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero h1{font-size:clamp(36px,10vw,48px)}
+  .hero-right{display:none}
+  .cat-section{padding:48px 20px}
+  .p-grid{grid-template-columns:1fr;gap:14px}
+  .p-card{max-width:420px;margin:0 auto;width:100%}
+  .how-section{padding:48px 20px}
+  .how-steps{grid-template-columns:1fr;gap:12px}
+  .trust-bar{padding:24px 20px}
+  .trust-inner{gap:20px;justify-content:flex-start}
+  .test-section{padding:48px 20px}
+  .test-grid{grid-template-columns:1fr}
+  .cta{padding:48px 20px}
+  .faq-section{padding:48px 20px}
+  footer{padding:32px 20px 16px}
+  .foot-links{gap:24px}
+  .cart-drawer{width:100%}
+  .modal{padding:24px 18px;margin:12px;max-width:100%}
+  .modal.w{max-width:100%}
+  .f-row{grid-template-columns:1fr}
 }
 @media(max-width:500px){
-  .why-grid{grid-template-columns:1fr}
-  .hero-stats{flex-direction:column;gap:12px;align-items:center}
-  .stat-num{font-size:32px}
+  .stat-row{flex-direction:column}
+  .cat-tabs{gap:4px}
+  .cat-tab{padding:6px 14px;font-size:11px}
+  .trust-inner{flex-direction:column;align-items:flex-start;gap:12px}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="navbar">
-  <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">HECHARR <span>Insurance</span></div>
-  <ul class="nav-links">
-    <li><a href="#products">Products</a></li>
-    <li><a href="#why">Why Us</a></li>
-    <li><a href="#reviews">Reviews</a></li>
-    <li><a href="#faq">FAQ</a></li>
-  </ul>
-  <div class="nav-right">
-    <div id="authButtons" style="display:flex;gap:8px">
-      <button class="btn-nav" onclick="openModal('login')">Log in</button>
-      <button class="btn-nav filled" onclick="openModal('signup')">Sign up</button>
-    </div>
-    <div id="userMenu" class="user-menu" style="display:none">
-      <button class="user-btn" onclick="toggleUserMenu(event)">
-        <span>👋</span>
-        <span id="userMenuName">Hi!</span>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <div class="user-dropdown" id="userDropdown">
-        <div class="user-dropdown-item" onclick="openPoliciesModal()">🛡️ My Policies</div>
-        <div class="user-dropdown-item danger" onclick="logout()">🚪 Log out</div>
-      </div>
-    </div>
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
-      <span></span><span></span><span></span>
-    </button>
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    HECHARR
   </div>
-</nav>
+  <ul class="topbar-nav"><li><a href="#products">Products</a></li><li><a href="#how">How It Works</a></li><li><a href="#reviews">Reviews</a></li><li><a href="#faq">FAQ</a></li></ul>
+  <div class="topbar-right">
+    <div id="authBtns" style="display:flex;gap:6px"><button class="t-btn t-btn-ghost" onclick="openM('login')">Log in</button><button class="t-btn t-btn-pink" onclick="openM('signup')">Sign up</button></div>
+    <div id="userArea" style="display:none;position:relative"><div class="user-pill" onclick="event.stopPropagation();document.getElementById('uDD').classList.toggle('open')"><div class="user-pill-avatar" id="uAvatar">H</div><span class="user-pill-name" id="uName">Hi</span></div><div class="user-dd" id="uDD"><div class="user-dd-item" onclick="openPolicies()">My Policies</div><div class="user-dd-item red" onclick="logout()">Log out</div></div></div>
+    <button class="t-cart" onclick="toggleCart()"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.98-1.68l1.6-8.32H6"/></svg><div class="t-cart-badge" id="cBadge">0</div></button>
+    <button class="m-toggle" id="mBtn" onclick="toggleMobile()"><span></span><span></span><span></span></button>
+  </div>
+</div>
 
 <!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobileMenu">
-  <ul class="mobile-menu-links">
-    <li><a href="#products" onclick="closeMobileMenu()">Products</a></li>
-    <li><a href="#why" onclick="closeMobileMenu()">Why Us</a></li>
-    <li><a href="#reviews" onclick="closeMobileMenu()">Reviews</a></li>
-    <li><a href="#faq" onclick="closeMobileMenu()">FAQ</a></li>
-  </ul>
-  <div id="mobileAuthSection"></div>
+<div class="m-menu" id="mMenu">
+  <ul class="m-menu-links"><li><a href="#products" onclick="closeMobile()">Products</a></li><li><a href="#how" onclick="closeMobile()">How It Works</a></li><li><a href="#reviews" onclick="closeMobile()">Reviews</a></li><li><a href="#faq" onclick="closeMobile()">FAQ</a></li></ul>
+  <div id="mAuth"></div>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
-    <div class="hero-tag"><div class="hero-dot"></div>Trusted by Millions</div>
-    <h1>Protect What<br><em>Matters Most</em></h1>
-    <p class="hero-desc">Comprehensive insurance solutions for your car, health, travel, and home. Simple policies, instant claims, and 24/7 support at your fingertips.</p>
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Plans →</button>
-      <button class="btn-secondary" onclick="document.getElementById('why').scrollIntoView({behavior:'smooth'})">Why HECHARR?</button>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-badge"><div class="hero-badge-dot"></div>Trusted by 7 Crore+ Indians</div>
+      <h1>Insurance that<br><span>actually</span> makes sense</h1>
+      <p class="hero-p">Car, bike, health, travel, home & life — all in one place. Instant policies, 3-day claims, zero hassle.</p>
+      <div class="hero-btns">
+        <button class="hero-btn-main" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Plans</button>
+        <button class="hero-btn-sec" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</button>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div><div class="stat-num">7Cr+</div><div class="stat-lbl">Indians Protected</div></div>
-      <div><div class="stat-num">4.8★</div><div class="stat-lbl">Customer Rating</div></div>
-      <div><div class="stat-num">98%</div><div class="stat-lbl">Claims Settled</div></div>
+    <div class="hero-right">
+      <div class="stat-row">
+        <div class="stat-card s1"><div class="stat-card-val">7Cr+</div><div class="stat-card-lbl">Customers</div><div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div></div>
+        <div class="stat-card s2"><div class="stat-card-val">98%</div><div class="stat-card-lbl">Claims Settled</div><div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card s3"><div class="stat-card-val">4.8★</div><div class="stat-card-lbl">Rating</div><div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div></div>
+        <div class="stat-card s4"><div class="stat-card-val">10K+</div><div class="stat-card-lbl">Hospitals</div><div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l8-4 8 4v14"/><path d="M9 21v-4h6v4"/></svg></div></div>
+      </div>
     </div>
-  </div>
-  <div class="hero-visual">
-    <div class="hero-shield">
-      <div class="shield-icon">🛡️</div>
-      <div class="shield-brand">HECHARR</div>
-      <div class="shield-sub">Insurance Made Simple</div>
-    </div>
-    <div class="float-badge fb1">✅ IRDAI Registered</div>
-    <div class="float-badge fb2">⚡ Instant Claims</div>
-    <div class="float-badge fb3">🏆 Award Winning</div>
   </div>
 </section>
-
-<!-- MARQUEE -->
-<div class="marquee">
-  <div class="marquee-track" id="marqueeTrack"></div>
-</div>
 
 <!-- PRODUCTS -->
-<section class="section" id="products">
-  <div class="section-header">
-    <div class="section-tag">Insurance Products</div>
-    <div class="section-title">Choose Your <em>Protection</em></div>
-    <div class="section-desc">From motor to health, travel to home — we've got every aspect of your life covered with transparent, affordable plans.</div>
+<section class="cat-section" id="products">
+  <div class="cat-header">
+    <h2>Find your <span>protection</span></h2>
+    <div class="cat-tabs" id="catTabs"></div>
   </div>
-  <div class="products-grid" id="productsGrid"></div>
+  <div class="p-grid" id="pGrid"></div>
 </section>
 
-<!-- WHY CHOOSE US -->
-<section class="why-section" id="why">
-  <div class="section-header">
-    <div class="section-tag">Why HECHARR Insurance</div>
-    <div class="section-title">Insurance <em>Simplified</em></div>
-    <div class="section-desc" style="color:rgba(255,255,255,.5)">We're on a mission to make insurance as simple as ordering food online.</div>
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-header"><h2>How it <span>works</span></h2><p>Three steps. Two minutes. One less thing to worry about.</p></div>
+    <div class="how-steps">
+      <div class="how-step"><div class="how-num">01</div><div class="how-step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><div class="how-step-title">Choose a plan</div><div class="how-step-desc">Browse 9 insurance categories. Compare Basic, Standard, and Premium options side by side.</div></div>
+      <div class="how-step"><div class="how-num">02</div><div class="how-step-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div class="how-step-title">Pay securely</div><div class="how-step-desc">Checkout powered by Stripe. 256-bit encryption. Your card details are never stored.</div></div>
+      <div class="how-step"><div class="how-num">03</div><div class="how-step-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div><div class="how-step-title">You're covered</div><div class="how-step-desc">Policy issued instantly. Manage everything online. File claims in 3 taps.</div></div>
+    </div>
   </div>
-  <div class="why-grid" id="whyGrid"></div>
 </section>
+
+<!-- TRUST -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>IRDAI Registered</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Instant Issuance</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Bank-Grade Security</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.11 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81"/></svg>24/7 Support</div>
+  </div>
+</div>
 
 <!-- REVIEWS -->
-<section class="section" id="reviews" style="background:var(--bg)">
-  <div class="section-header">
-    <div class="section-tag">Customer Stories</div>
-    <div class="section-title">Trusted by <em>Millions</em></div>
-    <div class="section-desc">Real stories from real customers who chose HECHARR Insurance.</div>
-  </div>
-  <div class="reviews-grid" id="reviewsGrid"></div>
+<section class="test-section" id="reviews">
+  <div class="test-header"><h2>What people <span>say</span></h2></div>
+  <div class="test-grid" id="testGrid"></div>
 </section>
 
-<!-- CTA BANNER -->
-<div class="cta-banner">
-  <h2>Ready to Get <em style="color:var(--accent)">Protected?</em></h2>
-  <p>Get a free quote in under 2 minutes. No paperwork, no hassle.</p>
-  <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Get Free Quote →</button>
-</div>
+<!-- CTA -->
+<div class="cta"><h2>Ready to get <span>covered?</span></h2><p>Free quote in 2 minutes. No paperwork, no hidden charges.</p><button class="hero-btn-main" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Get Started</button></div>
 
 <!-- FAQ -->
 <section class="faq-section" id="faq">
-  <div class="section-header">
-    <div class="section-tag">FAQ</div>
-    <div class="section-title">Frequently Asked<br>Questions</div>
-  </div>
-  <div class="faq-list" id="faqList"></div>
+  <h2>Common <span>questions</span></h2>
+  <div id="faqList"></div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">HECHARR <span>Insurance</span></div>
-  <p style="color:rgba(255,255,255,.5);margin-bottom:10px">Making Insurance Simple Since 2024</p>
-  <div class="footer-links">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Service</a>
-    <a href="#">Claims Process</a>
-    <a href="#">Contact Us</a>
-    <a href="#">Grievance Redressal</a>
+  <div class="foot-inner">
+    <div><div class="foot-brand"><div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="white" fill="none" stroke-width="2"/></svg></div>HECHARR Insurance</div><p class="foot-tagline">Making insurance simple, smart, and secure for millions of Indians.</p></div>
+    <div class="foot-links">
+      <div class="foot-col"><div class="foot-col-title">Products</div><a href="#">Car</a><a href="#">Health</a><a href="#">Travel</a><a href="#">Home</a><a href="#">Life</a></div>
+      <div class="foot-col"><div class="foot-col-title">Company</div><a href="#">About</a><a href="#">Claims</a><a href="#">Contact</a><a href="#">Careers</a></div>
+      <div class="foot-col"><div class="foot-col-title">Legal</div><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Grievance</a><a href="#">IRDAI</a></div>
+    </div>
   </div>
-  <div class="footer-disclaimer">
-    <p>© 2025 HECHARR Insurance. All rights reserved. IRDAI Registration No: XXX | CIN: XXXXXXXXXX</p>
-    <p style="margin-top:4px">Insurance is the subject matter of solicitation. For more details on risk factors, terms & conditions, please read the sales brochure carefully before concluding a sale.</p>
-  </div>
+  <div class="foot-bottom">© 2025 HECHARR Insurance. All rights reserved. IRDAI Reg No: XXX | CIN: XXXXXXXXXX<br>Insurance is the subject matter of solicitation. Please read the sales brochure carefully before concluding a sale.</div>
 </footer>
 
-<!-- LOGIN MODAL -->
-<div class="modal-overlay" id="loginModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('login')">✕</button>
-    <div class="modal-title">Welcome Back 👋</div>
-    <div class="modal-sub">Log in to your HECHARR Insurance account</div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
-    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="loginPassword" type="password" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleLogin()"></div>
-    <div id="loginError" class="error-msg"></div>
-    <button class="btn-modal" id="loginBtn" onclick="handleLogin()">Log In</button>
-    <div class="divider">or</div>
-    <div style="text-align:center;font-size:14px;color:var(--text-mid)">Don't have an account? <a class="modal-link" onclick="switchModal('login','signup')">Sign up free</a></div>
-  </div>
-</div>
+<!-- CART -->
+<div class="cart-overlay" id="cOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cDrawer"><div class="cart-hdr"><span class="cart-hdr-title">Your plans</span><button class="cart-hdr-close" onclick="toggleCart()">✕</button></div><div class="cart-body" id="cBody"></div><div id="cFoot"></div></div>
 
-<!-- SIGNUP MODAL -->
-<div class="modal-overlay" id="signupModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('signup')">✕</button>
-    <div class="modal-title">Create Account 🛡️</div>
-    <div class="modal-sub">Join millions of protected Indians</div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="signupFirst" placeholder="Rahul" autocomplete="given-name"></div>
-      <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="signupLast" placeholder="Sharma" autocomplete="family-name"></div>
-    </div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="signupEmail" type="email" placeholder="you@example.com" autocomplete="email"></div>
-    <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="signupPhone" type="tel" placeholder="+91 9876543210"></div>
-    <div class="form-group"><label class="form-label">Password (min 8 chars)</label><input class="form-input" id="signupPassword" type="password" placeholder="Create a strong password" autocomplete="new-password" onkeydown="if(event.key==='Enter')handleSignup()"></div>
-    <div id="signupError" class="error-msg"></div>
-    <button class="btn-modal" id="signupBtn" onclick="handleSignup()">Create Account</button>
-    <div class="divider">or</div>
-    <div style="text-align:center;font-size:14px;color:var(--text-mid)">Already have an account? <a class="modal-link" onclick="switchModal('signup','login')">Log in</a></div>
-  </div>
-</div>
+<!-- MODALS -->
+<div class="modal-bg" id="loginModal"><div class="modal"><button class="modal-x" onclick="closeM('login')">✕</button><h3>Welcome back</h3><div class="m-sub">Log in to your account</div><div class="f-group"><label class="f-label">Email</label><input class="f-input" id="lEmail" type="email" placeholder="you@example.com"></div><div class="f-group"><label class="f-label">Password</label><input class="f-input" id="lPass" type="password" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div><div id="lErr" class="f-error"></div><button class="btn-full" id="lBtn" onclick="doLogin()">Log In</button><div class="f-divider">or</div><div style="text-align:center;font-size:13px;color:var(--gray-3)">No account? <a class="f-link" onclick="swapM('login','signup')">Sign up</a></div></div></div>
 
-<!-- QUOTE MODAL -->
-<div class="modal-overlay" id="quoteModal">
-  <div class="modal wide">
-    <button class="modal-close" onclick="closeModal('quote')">✕</button>
-    <div id="quoteContent"></div>
-  </div>
-</div>
+<div class="modal-bg" id="signupModal"><div class="modal"><button class="modal-x" onclick="closeM('signup')">✕</button><h3>Create account</h3><div class="m-sub">Join millions of protected Indians</div><div class="f-row"><div class="f-group"><label class="f-label">First name</label><input class="f-input" id="sFirst" placeholder="Rahul"></div><div class="f-group"><label class="f-label">Last name</label><input class="f-input" id="sLast" placeholder="Sharma"></div></div><div class="f-group"><label class="f-label">Email</label><input class="f-input" id="sEmail" type="email" placeholder="you@example.com"></div><div class="f-group"><label class="f-label">Phone</label><input class="f-input" id="sPhone" type="tel" placeholder="+91 9876543210"></div><div class="f-group"><label class="f-label">Password (8+ chars)</label><input class="f-input" id="sPass" type="password" placeholder="Create password" onkeydown="if(event.key==='Enter')doSignup()"></div><div id="sErr" class="f-error"></div><button class="btn-full" id="sBtn" onclick="doSignup()">Create Account</button><div class="f-divider">or</div><div style="text-align:center;font-size:13px;color:var(--gray-3)">Have an account? <a class="f-link" onclick="swapM('signup','login')">Log in</a></div></div></div>
 
-<!-- CHECKOUT MODAL -->
-<div class="modal-overlay" id="checkoutModal">
-  <div class="modal wide">
-    <button class="modal-close" onclick="closeModal('checkout')">✕</button>
-    <div id="checkoutContent"></div>
-  </div>
-</div>
+<div class="modal-bg" id="quoteModal"><div class="modal w"><button class="modal-x" onclick="closeM('quote')">✕</button><div id="qContent"></div></div></div>
+<div class="modal-bg" id="checkoutModal"><div class="modal w"><button class="modal-x" onclick="closeM('checkout')">✕</button><div id="ckContent"></div></div></div>
+<div class="modal-bg" id="polModal"><div class="modal w"><button class="modal-x" onclick="closeM('pol')">✕</button><h3>My Policies</h3><div class="m-sub">Your active and past policies</div><div id="polContent" style="margin-top:8px"></div></div></div>
 
-<!-- POLICIES MODAL -->
-<div class="modal-overlay" id="policiesModal">
-  <div class="modal wide">
-    <button class="modal-close" onclick="closeModal('policies')">✕</button>
-    <div class="modal-title">My Policies 🛡️</div>
-    <div class="modal-sub">Your active and past insurance policies</div>
-    <div id="policiesContent" style="margin-top:12px"></div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div id="toastContainer"></div>
+<div id="toasts"></div>
 
 <script>
-// ============================================================
-// CONFIG — UPDATE BEFORE DEPLOYING
-// ============================================================
-const STRIPE_PUBLISHABLE_KEY = 'pk_live_51SMpmF0sY7FDSD0V9E76gNJjk2maCQIswQNGvzgrXcBn1bt5ZWAmtmFf67bF2DQRpvTMdefNyWRJvf4h18FVLOFy00ALGqZaLa';
-const BACKEND_URL = 'https://hecharinsurance-backend.vercel.app';
-// ============================================================
+const STRIPE_PK='pk_live_51SMpmF0sY7FDSD0V9E76gNJjk2maCQIswQNGvzgrXcBn1bt5ZWAmtmFf67bF2DQRpvTMdefNyWRJvf4h18FVLOFy00ALGqZaLa';
+const API='https://hecharinsurance-backend.vercel.app';
 
-let user = JSON.parse(localStorage.getItem('hecharr_ins_user') || 'null');
-let selectedQuotePlan = null;
-let currentQuoteType = '';
+// ===== PRODUCT DATA =====
+const ICONS={
+  car:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M5 13l1.5-5h11L19 13" stroke="currentColor"/><rect x="3" y="13" width="18" height="5" rx="2" stroke="currentColor"/><circle cx="7.5" cy="18" r="1.5" fill="currentColor" stroke="none"/><circle cx="16.5" cy="18" r="1.5" fill="currentColor" stroke="none"/><rect x="8" y="14" width="8" height="2" rx="1" fill="currentColor" opacity=".12"/></svg>',
+  'two-wheeler':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="17" r="3"/><circle cx="5" cy="17" r="1" fill="currentColor" stroke="none"/><circle cx="19" cy="17" r="3"/><circle cx="19" cy="17" r="1" fill="currentColor" stroke="none"/><path d="M5 14l3-5h5l3 5"/><path d="M14 9l-2-4"/><path d="M10 9h4" stroke-width="2.5" stroke-linecap="round"/></svg>',
+  commercial:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="7" width="14" height="11" rx="1.5"/><path d="M15 11h4.5a2 2 0 011.8 1.1L23 15v3a1 1 0 01-1 1h-7"/><circle cx="6" cy="18" r="2"/><circle cx="19" cy="18" r="2"/></svg>',
+  health:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3" fill="currentColor" opacity=".06"/><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 7v10M7 12h10" stroke-width="2.5" stroke-linecap="round"/></svg>',
+  'super-topup':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" opacity=".06"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v5M9.5 10.5h5" stroke-width="2" stroke-linecap="round"/></svg>',
+  travel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z" fill="currentColor" opacity=".06"/><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z"/><circle cx="12" cy="9" r="2.5"/></svg>',
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10l9-7 9 7" stroke-width="2" stroke-linecap="round"/><path d="M5 10v10a1 1 0 001 1h12a1 1 0 001-1V10" fill="currentColor" opacity=".06"/><path d="M5 10v10a1 1 0 001 1h12a1 1 0 001-1V10"/><rect x="9" y="14" width="6" height="7" rx="1"/></svg>',
+  shop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l1.5-5h15L21 9"/><rect x="3" y="9" width="18" height="12" rx="1" fill="currentColor" opacity=".06"/><rect x="3" y="9" width="18" height="12" rx="1"/><rect x="8" y="15" width="4" height="6" rx=".5"/></svg>',
+  life:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" fill="currentColor" opacity=".08"/><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
+};
 
-// ===== INSURANCE PRODUCTS =====
-const insuranceProducts = [
-  {id:'car', emoji:'🚗', name:'Car Insurance', badge:'popular', desc:'Comprehensive & third-party cover for your car with zero depreciation and roadside assistance.', startPrice:'₹2,094', features:['Third Party','Comprehensive','Zero Depreciation','Roadside Assist'], bg:'linear-gradient(135deg,#E8F4F8,#D4EEF2)'},
-  {id:'two-wheeler', emoji:'🏍️', name:'Two Wheeler Insurance', badge:'', desc:'Protect your bike or scooter with affordable premiums. Covers theft, damage, and third-party liability.', startPrice:'₹482', features:['Own Damage','Theft Cover','Third Party','Personal Accident'], bg:'linear-gradient(135deg,#E8F0E4,#D4E8D0)'},
-  {id:'commercial', emoji:'🚛', name:'Commercial Vehicle', badge:'', desc:'Fleet and commercial vehicle insurance for trucks, taxis, auto-rickshaws, and buses.', startPrice:'₹5,200', features:['Fleet Cover','Goods Transit','Driver Cover','Third Party'], bg:'linear-gradient(135deg,#F0EAE0,#E8DED4)'},
-  {id:'health', emoji:'🏥', name:'Health Insurance', badge:'popular', desc:'Comprehensive health coverage with cashless treatment at 10,000+ network hospitals across India.', startPrice:'₹3,999', features:['Cashless Claims','No Room Limits','Day Care Cover','Pre & Post Hospital'], bg:'linear-gradient(135deg,#EAECF8,#DCE0F0)'},
-  {id:'super-topup', emoji:'💊', name:'Super Top-Up Health', badge:'', desc:'Boost your existing health cover with an affordable super top-up plan for those unexpected large bills.', startPrice:'₹1,999', features:['High Sum Insured','Low Premium','Existing Plan Boost','Family Floater'], bg:'linear-gradient(135deg,#F8ECE8,#F0DED8)'},
-  {id:'travel', emoji:'✈️', name:'International Travel', badge:'', desc:'Travel worry-free with medical emergency cover, trip cancellation, lost baggage, and flight delay protection.', startPrice:'₹299', features:['Medical Emergency','Trip Cancel','Lost Baggage','Flight Delay'], bg:'linear-gradient(135deg,#E0F0F8,#D0E8F4)'},
-  {id:'home', emoji:'🏠', name:'Home Insurance', badge:'', desc:'Protect your home and belongings from fire, theft, natural disasters, and more.', startPrice:'₹1,499', features:['Fire & Theft','Natural Disaster','Contents Cover','Liability'], bg:'linear-gradient(135deg,#F2ECE4,#E8E0D6)'},
-  {id:'shop', emoji:'🏪', name:'Shop & Business', badge:'', desc:'Safeguard your shop, office, or business premises against fire, burglary, and natural calamities.', startPrice:'₹2,499', features:['Fire Cover','Burglary','Stock Cover','Business Interrupt'], bg:'linear-gradient(135deg,#E8E4F0,#DCD8E8)'},
-  {id:'life', emoji:'💚', name:'Life Insurance', badge:'new', desc:'Secure your family\'s future with guaranteed returns, term plans, and savings plans.', startPrice:'₹5,000', features:['Term Plan','Savings Plan','Guaranteed Returns','Tax Benefits'], bg:'linear-gradient(135deg,#E4F2E8,#D8EAE0)'},
+const CATS={all:'All',motor:'Motor',health:'Health',travel:'Travel',property:'Property',life:'Life'};
+
+const P=[
+  {id:'car',cat:'motor',name:'Car Insurance',badge:'pop',desc:'Comprehensive & third-party cover. Zero dep, roadside assist, engine protect.',price:2094,tags:['Third Party','Comprehensive','Zero Dep','Roadside'],rating:4.9,reviews:58210,plans:[{n:'Third Party',p:2094,c:0,f:['Third Party Liability','Personal Accident Cover','Legal Liability']},{n:'Comprehensive',p:8499,c:500000,f:['Own Damage','Third Party','Fire & Theft','Natural Disaster','Roadside Assist']},{n:'Zero Dep Premium',p:12999,c:800000,f:['Everything in Comp.','Zero Depreciation','Engine Protect','Consumables','Return to Invoice','NCB Protect','24/7 Towing']}]},
+  {id:'two-wheeler',cat:'motor',name:'Two Wheeler',badge:'',desc:'Affordable bike & scooter cover. Theft, damage, personal accident.',price:482,tags:['Own Damage','Theft','Third Party','PA Cover'],rating:4.8,reviews:32100,plans:[{n:'Third Party',p:482,c:0,f:['Third Party Liability','PA Cover']},{n:'Comprehensive',p:2199,c:100000,f:['Own Damage','Third Party','Fire & Theft','Pillion Cover']},{n:'Premium',p:3999,c:200000,f:['All Comprehensive','Zero Dep','Engine Protect','Roadside Assist']}]},
+  {id:'commercial',cat:'motor',name:'Commercial Vehicle',badge:'',desc:'Fleet & commercial insurance for trucks, taxis, auto-rickshaws, buses.',price:5200,tags:['Fleet','Goods Transit','Driver Cover'],rating:4.7,reviews:8450,plans:[{n:'Basic TP',p:5200,c:0,f:['Third Party Liability','Driver PA Cover']},{n:'Comp. Fleet',p:15999,c:1500000,f:['Own Damage','Third Party','Goods Transit','Fire & Theft']},{n:'Enterprise',p:28999,c:3000000,f:['All Comp.','Zero Dep','Fleet 15% Discount','Dedicated Manager']}]},
+  {id:'health',cat:'health',name:'Health Insurance',badge:'pop',desc:'Cashless at 10,000+ hospitals. No room limits, AYUSH, mental health.',price:3999,tags:['Cashless','No Room Limits','Day Care','AYUSH'],rating:4.9,reviews:45600,plans:[{n:'Essential ₹3L',p:3999,c:300000,f:['₹3L Sum Insured','Cashless 10K+ Hospitals','Day Care','Pre-Hospital 60d']},{n:'Standard ₹5L',p:6999,c:500000,f:['₹5L Sum Insured','No Room Rent Limits','AYUSH','Mental Health','NCB 50%']},{n:'Premium ₹1Cr',p:14999,c:10000000,f:['₹1Cr Sum Insured','Global Cover','Air Ambulance','Maternity','Restore 100%','Health Coach']}]},
+  {id:'super-topup',cat:'health',name:'Super Top-Up',badge:'',desc:'Boost existing health cover. High sum insured at fraction of cost.',price:1999,tags:['High Cover','Low Premium','Family Floater'],rating:4.7,reviews:12300,plans:[{n:'₹10L Top-Up',p:1999,c:1000000,f:['₹10L Cover','₹3L Deductible','Family Floater']},{n:'₹25L Top-Up',p:3499,c:2500000,f:['₹25L Cover','AYUSH','NCB','Health Check']},{n:'₹50L Top-Up',p:5999,c:5000000,f:['₹50L Cover','Maternity','Air Ambulance','Unlimited NCB']}]},
+  {id:'travel',cat:'travel',name:'Travel Insurance',badge:'',desc:'Medical emergency up to $500K, trip cancel, lost baggage, flight delay.',price:299,tags:['Medical','Trip Cancel','Lost Baggage','Adventure'],rating:4.8,reviews:19800,plans:[{n:'Basic',p:299,c:1500000,f:['$25K Medical','Trip Cancel ₹50K','Lost Bag ₹30K']},{n:'Explorer',p:599,c:5000000,f:['$100K Medical','Trip Cancel ₹1.5L','Adventure Sports','Passport Loss']},{n:'Global Shield',p:1299,c:15000000,f:['$500K Medical','Trip Cancel ₹5L','Dental Emergency','Study Interruption']}]},
+  {id:'home',cat:'property',name:'Home Insurance',badge:'',desc:'Fire, theft, natural disaster, water damage, liability. Full home cover.',price:1499,tags:['Fire & Theft','Disaster','Contents','Liability'],rating:4.6,reviews:6700,plans:[{n:'Structure Only',p:1499,c:2000000,f:['Building Structure','Fire & Allied','Earthquake']},{n:'Home + Contents',p:3999,c:5000000,f:['Structure + Contents','Theft','Water Damage','Temp Accommodation']},{n:'Complete Shield',p:7499,c:10000000,f:['All Home+','Landlord Liability','Cyber Fraud','Art & Collectibles']}]},
+  {id:'shop',cat:'property',name:'Shop & Business',badge:'',desc:'Fire, burglary, stock loss, business interruption. Full business cover.',price:2499,tags:['Fire','Burglary','Stock','Business Interrupt'],rating:4.7,reviews:4200,plans:[{n:'Basic Shop',p:2499,c:1000000,f:['Fire & Allied','Burglary','Stock up to ₹5L']},{n:'Business Std',p:6999,c:5000000,f:['Stock up to ₹25L','Business Interruption','Public Liability']},{n:'Enterprise',p:14999,c:15000000,f:['Stock up to ₹1Cr','Machinery Breakdown','Cyber Insurance']}]},
+  {id:'life',cat:'life',name:'Life Insurance',badge:'new',desc:'Term plans, guaranteed returns, ULIPs. Tax benefits Sec 80C & 10(10D).',price:5000,tags:['Term Plan','Savings','Tax 80C','Critical Illness'],rating:4.8,reviews:21500,plans:[{n:'Pure Term ₹50L',p:5000,c:5000000,f:['₹50L Cover','30-Year Term','Tax Sec 80C']},{n:'Term+Critical ₹1Cr',p:9999,c:10000000,f:['₹1Cr Cover','Critical Illness ₹25L','Accidental Death 2x']},{n:'Savings ₹2Cr',p:24999,c:20000000,f:['₹2Cr Cover','Guaranteed Monthly Income','Tax Free Maturity']}]},
 ];
 
-const whyData = [
-  {emoji:'⚡', title:'Instant Policies', desc:'Get your policy issued in under 2 minutes. No paperwork, no waiting.'},
-  {emoji:'📱', title:'100% Digital', desc:'Buy, manage, and claim — everything from your smartphone.'},
-  {emoji:'💰', title:'Best Prices', desc:'AI-powered pricing means you only pay for the cover you need.'},
-  {emoji:'🤝', title:'98% Claims Settled', desc:'Industry-leading claim settlement ratio with average 3-day processing.'},
-  {emoji:'🏥', title:'10,000+ Hospitals', desc:'Massive cashless hospital network across India for health claims.'},
-  {emoji:'📞', title:'24/7 Support', desc:'Round-the-clock customer support via phone, chat, and WhatsApp.'},
-  {emoji:'🔒', title:'Data Security', desc:'Bank-grade encryption and security for all your personal data.'},
-  {emoji:'⭐', title:'Award Winning', desc:'Recognised as India\'s most innovative insurance company.'},
+const reviews=[
+  {n:'Rajesh K.',av:'#E91E63',l:'R',s:5,t:'Car claim approved in 4 hours via app. Money next day. Incredible experience.'},
+  {n:'Sneha M.',av:'#131829',l:'S',s:5,t:'Cashless at Fortis was seamless. No forms, just showed policy on the app.'},
+  {n:'Amit P.',av:'#C2185B',l:'A',s:5,t:'Travel insurance for Europe in 2 minutes. Flight delay claim — ₹12K back via app.'},
+  {n:'Priya S.',av:'#1C2333',l:'P',s:5,t:'Renewed Activa for ₹800/year comprehensive. Self-inspection via camera — genius.'},
+  {n:'Vikram R.',av:'#AD1457',l:'V',s:4,t:'Home water damage claim processed in 5 days. Comprehensive coverage at premium tier.'},
+  {n:'Ananya D.',av:'#09090B',l:'A',s:5,t:'Shop insurance covers everything. Reasonable premium. Complete peace of mind.'},
 ];
 
-const reviewsData = [
-  {name:'Rajesh K.', avatar:'#0D6B6E', letter:'R', stars:5, text:'Filed a car insurance claim after a minor accident. The entire process was digital — uploaded photos, got approval in 4 hours, and money in my account the next day. Incredible!'},
-  {name:'Sneha M.', avatar:'#D4A853', letter:'S', stars:5, text:'Switched to HECHARR for health insurance. The cashless process at Fortis was seamless. No forms to fill, no running around. This is how insurance should work.'},
-  {name:'Amit P.', avatar:'#2E8B57', letter:'A', stars:5, text:'Got travel insurance for my Europe trip in 2 minutes. When my flight got delayed in London, I claimed the compensation through the app. Got ₹12,000 back!'},
-  {name:'Priya S.', avatar:'#8B70B8', letter:'P', stars:5, text:'The two-wheeler insurance is so affordable. Renewed my Activa policy for just ₹800/year with comprehensive cover. The self-inspection via phone was genius.'},
-  {name:'Vikram R.', avatar:'#C0392B', letter:'V', stars:4, text:'Great home insurance policy. Had a water damage issue and the claim was processed quickly. Only suggestion — add more add-on options for electronics.'},
-  {name:'Ananya D.', avatar:'#4A8B5A', letter:'A', stars:5, text:'As a business owner, the shop insurance gives me peace of mind. Covers everything from fire to theft, and the premium is very reasonable. Highly recommend.'},
+const faqs=[
+  {q:'How quickly do I get my policy?',a:'Most policies are issued instantly after payment. Motor in under 2 minutes. Health may take up to 24 hours for underwriting.'},
+  {q:'How do I file a claim?',a:'Via our app, website, or 24/7 helpline. Motor: upload photos. Health: visit any of 10,000+ network hospitals for cashless treatment.'},
+  {q:'Can I cancel and get a refund?',a:'Free-look period: 15 days (health), 7 days (motor) for full refund. After that, pro-rata refund per IRDAI guidelines.'},
+  {q:'What documents are needed?',a:'Motor: RC copy & previous policy. Health: Aadhaar/PAN. Travel: passport. Most policies just need OTP verification.'},
+  {q:'Is online payment safe?',a:'Yes. Stripe PCI DSS Level 1 encryption. Card details tokenized, never stored. 256-bit SSL on all pages.'},
+  {q:'How does cashless work?',a:'Visit any network hospital. Show digital policy card. Hospital coordinates with us. You pay nothing — we settle directly.'},
 ];
 
-const faqs = [
-  {q:'How quickly can I get my policy?', a:'Most policies are issued instantly after payment. Motor insurance policies are generated in under 2 minutes. Health insurance may take up to 24 hours for verification.'},
-  {q:'How do I file a claim?', a:'You can file a claim through our app, website, or by calling our 24/7 helpline. For motor claims, just upload photos of the damage. For health, visit any network hospital for cashless treatment.'},
-  {q:'Can I cancel my policy?', a:'Yes, you can cancel within the free-look period (15 days for health, 7 days for motor) for a full refund. After that, a pro-rata refund will be provided as per IRDAI guidelines.'},
-  {q:'What documents do I need?', a:'For motor insurance: RC copy and previous policy. For health: Aadhaar/PAN and basic health details. For travel: passport copy and trip details.'},
-  {q:'Is online payment safe?', a:'Absolutely. We use Stripe\'s bank-grade encryption (PCI DSS Level 1) for all transactions. Your card details are never stored on our servers.'},
-  {q:'How does cashless claim work?', a:'Visit any of our 10,000+ network hospitals. Show your policy details and the hospital will coordinate directly with us. You pay nothing — we settle directly with the hospital.'},
-];
+// ===== STATE =====
+let user=JSON.parse(localStorage.getItem('hi_user')||'null');
+let cart=(()=>{try{return JSON.parse(localStorage.getItem(user?`hi_c_${user.id}`:'hi_c_g')||'[]');}catch(e){return[];}})();
+let activeCat='all',curProd=null,selPlan=null,ckStep=1,ckData={},stripe=null,cardEl=null;
+const saveCart=()=>localStorage.setItem(user?`hi_c_${user.id}`:'hi_c_g',JSON.stringify(cart));
+const loadCart=()=>{try{return JSON.parse(localStorage.getItem(user?`hi_c_${user.id}`:'hi_c_g')||'[]');}catch(e){return[];}};
+const fmt=v=>'<span class="n">₹'+Math.round(v).toLocaleString('en-IN')+'</span>';
+const fmtCover=c=>c>=10000000?'<span class="n">₹'+(c/10000000)+'Cr</span>':c>=100000?'<span class="n">₹'+(c/100000)+'L</span>':c>0?'<span class="n">₹'+(c/1000)+'K</span>':'Third Party';
 
-// ===== RENDER FUNCTIONS =====
-function renderMarquee() {
-  const items = ['🛡️ IRDAI Registered','⚡ Instant Policy Issuance','💰 Best Price Guarantee','🏥 10,000+ Network Hospitals','📱 100% Digital Process','🤝 98% Claims Settled','📞 24/7 Customer Support','🔒 Secure Payments'];
-  document.getElementById('marqueeTrack').innerHTML = [...items,...items].map(i=>`<div class="marquee-item">${i}<div class="mdot"></div></div>`).join('');
+// ===== RENDER =====
+function renderTabs(){document.getElementById('catTabs').innerHTML=Object.entries(CATS).map(([k,v])=>`<div class="cat-tab ${k===activeCat?'active':''}" onclick="filterCat('${k}')">${v}</div>`).join('');}
+function filterCat(c){activeCat=c;renderTabs();renderProducts();}
+function renderProducts(){
+  const list=activeCat==='all'?P:P.filter(p=>p.cat===activeCat);
+  document.getElementById('pGrid').innerHTML=list.map(p=>`
+    <div class="p-card" onclick="openQuote('${p.id}')">
+      ${p.badge==='pop'?'<div class="p-card-badge pop">Popular</div>':''}${p.badge==='new'?'<div class="p-card-badge new">New</div>':''}
+      <div class="p-icon" style="background:var(--pink-50);color:var(--pink)">${ICONS[p.id]}</div>
+      <div class="p-card-name">${p.name}</div>
+      <div class="p-card-desc">${p.desc}</div>
+      <div class="p-tags">${p.tags.map(t=>`<span class="p-tag">${t}</span>`).join('')}</div>
+      <div class="p-card-foot"><div><div class="p-price">${fmt(p.price)} <span class="p-price-sub">/yr onwards</span></div></div><button class="p-btn" onclick="event.stopPropagation();openQuote('${p.id}')">Get Quote</button></div>
+    </div>`).join('');
 }
+function renderReviews(){document.getElementById('testGrid').innerHTML=reviews.map(r=>`<div class="test-card"><div class="test-stars">${'★'.repeat(r.s)}${'☆'.repeat(5-r.s)}</div><div class="test-text">"${r.t}"</div><div class="test-author"><div class="test-av" style="background:${r.av}">${r.l}</div><div><div class="test-name">${r.n}</div><div class="test-verified">✓ Verified</div></div></div></div>`).join('');}
+function renderFAQs(){document.getElementById('faqList').innerHTML=faqs.map((f,i)=>`<div class="faq-item" id="fq${i}"><div class="faq-q" onclick="document.getElementById('fq${i}').classList.toggle('open')"><span>${f.q}</span><span class="faq-arrow">⌃</span></div><div class="faq-a">${f.a}</div></div>`).join('');}
 
-function renderProducts() {
-  document.getElementById('productsGrid').innerHTML = insuranceProducts.map(p => `
-    <div class="product-card" onclick="openQuoteModal('${p.id}')">
-      ${p.badge==='popular'?'<div class="product-badge">⭐ Popular</div>':''}
-      ${p.badge==='new'?'<div class="product-badge" style="background:var(--accent);color:var(--dark)">✨ New</div>':''}
-      <div class="product-icon-wrap" style="background:${p.bg}">
-        <div class="product-emoji">${p.emoji}</div>
-      </div>
-      <div class="product-info">
-        <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc}</div>
-        <div class="product-features">${p.features.map(f=>`<span class="feature-pill">✓ ${f}</span>`).join('')}</div>
-        <div class="product-footer">
-          <div>
-            <div class="product-price">${p.startPrice}<span class="product-price-sub"> /year onwards</span></div>
-          </div>
-          <button class="btn-quote" onclick="event.stopPropagation();openQuoteModal('${p.id}')">Get Quote</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+// ===== QUOTE =====
+function openQuote(id){
+  curProd=P.find(p=>p.id===id);if(!curProd)return;selPlan=null;
+  document.getElementById('qContent').innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><div style="width:36px;height:36px;border-radius:10px;background:var(--pink-50);color:var(--pink);display:flex;align-items:center;justify-content:center">${ICONS[id]}</div><h3>${curProd.name}</h3></div>
+    <div class="m-sub">${curProd.desc}</div>
+    <div style="font-family:var(--heading);font-size:16px;font-weight:700;margin-bottom:8px">Choose a plan</div>
+    <div class="q-plans">${curProd.plans.map((p,i)=>`<div class="q-plan ${i===1?'sel':''}" onclick="pickPlan(${i},this)"><div class="q-plan-top"><div><div class="q-plan-name">${p.n}</div><div class="q-plan-cover">${fmtCover(p.c)}</div></div><div class="q-plan-price">${fmt(p.p)}<span>/yr</span></div></div><div class="q-plan-tags">${p.f.map(f=>`<span>✓ ${f}</span>`).join('')}</div></div>`).join('')}</div>
+    <button class="btn-full" style="margin-top:12px" onclick="addSel()">Add to Cart</button>
+    <button class="btn-full" style="background:var(--pure);color:var(--pink);border:1.5px solid var(--pink);margin-top:4px" onclick="buyNow()">Buy Now →</button>`;
+  selPlan=curProd.plans[1];openM('quote');
 }
+function pickPlan(i,el){document.querySelectorAll('.q-plan').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');selPlan=curProd.plans[i];}
+function addSel(){if(!selPlan||!curProd)return;const cid=`${curProd.id}_${selPlan.n.replace(/\s/g,'_')}`;if(cart.find(i=>i.id===cid)){toast('Already in cart','','');return;}cart.push({id:cid,pid:curProd.id,name:curProd.name,plan:selPlan.n,price:selPlan.p,qty:1});saveCart();updateCart();closeM('quote');toast(`${curProd.name} added`,'','ok');}
+function buyNow(){addSel();closeM('quote');setTimeout(goCheckout,200);}
 
-function renderWhy() {
-  document.getElementById('whyGrid').innerHTML = whyData.map(w=>`
-    <div class="why-card">
-      <div class="why-emoji">${w.emoji}</div>
-      <div class="why-title">${w.title}</div>
-      <div class="why-desc">${w.desc}</div>
-    </div>
-  `).join('');
+// ===== CART =====
+function removeCI(i){cart.splice(i,1);saveCart();updateCart();renderCartBody();}
+function updateCart(){const t=cart.reduce((s,i)=>s+i.qty,0);const b=document.getElementById('cBadge');b.style.display=t>0?'flex':'none';b.textContent=t;renderCartBody();}
+function renderCartBody(){
+  const body=document.getElementById('cBody'),foot=document.getElementById('cFoot');
+  if(!cart.length){body.innerHTML='<div class="cart-empty"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="cart-empty-title">No plans yet</div><div style="font-size:12px;color:var(--gray-4)">Explore products to get started</div></div>';foot.innerHTML='';return;}
+  body.innerHTML=cart.map((c,i)=>`<div class="cart-item"><div class="ci-icon">${ICONS[c.pid]||''}</div><div style="flex:1"><div class="ci-name">${c.name}</div><div class="ci-plan">${c.plan}</div></div><div class="ci-price">${fmt(c.price)}</div><span class="ci-rm" onclick="removeCI(${i})">✕</span></div>`).join('');
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0),gst=Math.round(sub*.18);
+  foot.innerHTML=`<div class="cart-foot"><div class="cf-row"><span>Subtotal</span><span>${fmt(sub)}</span></div><div class="cf-row"><span>GST 18%</span><span>${fmt(gst)}</span></div><div class="cf-total"><span>Total</span><span style="color:var(--pink)">${fmt(sub+gst)}</span></div><button class="btn-full" onclick="goCheckout()">Checkout</button></div>`;
 }
+function toggleCart(){document.getElementById('cDrawer').classList.toggle('open');document.getElementById('cOverlay').classList.toggle('open');}
 
-function renderReviews() {
-  document.getElementById('reviewsGrid').innerHTML = reviewsData.map(r=>`
-    <div class="review-card">
-      <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-      <div class="review-text">"${r.text}"</div>
-      <div class="review-author">
-        <div class="review-avatar" style="background:${r.avatar}">${r.letter}</div>
-        <div><div class="review-name">${r.name}</div><div class="review-verified">✓ Verified Customer</div></div>
-      </div>
-    </div>
-  `).join('');
+// ===== CHECKOUT =====
+function goCheckout(){if(!cart.length)return;toggleCart();ckStep=1;ckData={};if(user){ckData.fn=user.firstName||'';ckData.ln=user.lastName||'';ckData.em=user.email||'';ckData.ph=user.phone||'';}renderCk();openM('checkout');}
+function ckTotals(){const s=cart.reduce((a,i)=>a+i.price*i.qty,0),g=Math.round(s*.18);return{sub:s,gst:g,tot:s+g};}
+function renderCk(){
+  const{sub,gst,tot}=ckTotals(),c=document.getElementById('ckContent');
+  const mini=`<div class="ck-mini">${cart.map(i=>`<div class="ck-mini-row"><span>${i.name} — ${i.plan}</span><span>${fmt(i.price)}</span></div>`).join('')}<div class="ck-mini-row"><span>GST 18%</span><span>${fmt(gst)}</span></div><div class="ck-mini-total"><span>Total</span><span style="color:var(--pink)">${fmt(tot)}</span></div></div>`;
+  if(ckStep===1){c.innerHTML=`<h3>Checkout</h3><div class="ck-steps"><div class="ck-step active">1 · Info</div><div class="ck-step">2 · Pay</div></div>${mini}<div class="f-row"><div class="f-group"><label class="f-label">First name</label><input class="f-input" id="ckFn" value="${ckData.fn||''}"></div><div class="f-group"><label class="f-label">Last name</label><input class="f-input" id="ckLn" value="${ckData.ln||''}"></div></div><div class="f-group"><label class="f-label">Email</label><input class="f-input" id="ckEm" type="email" value="${ckData.em||''}"></div><div class="f-group"><label class="f-label">Phone</label><input class="f-input" id="ckPh" type="tel" value="${ckData.ph||''}"></div><button class="btn-full" onclick="ck1()">Continue to Payment</button>`;}
+  else if(ckStep===2){c.innerHTML=`<h3>Payment</h3><div class="ck-steps"><div class="ck-step done">✓ Info</div><div class="ck-step active">2 · Pay</div></div>${mini}<div class="f-group"><label class="f-label">Card details</label><div id="stripe-card-element"></div><div id="stripe-card-errors"></div></div><div style="text-align:center;font-size:11px;color:var(--gray-4);margin:6px 0"><svg style="vertical-align:middle;margin-right:3px" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>256-bit SSL · Powered by <strong style="color:#635BFF">Stripe</strong></div><button class="btn-full" id="payBtn" onclick="doPay()">Pay ${fmt(tot)}</button><button onclick="ckStep=1;renderCk()" style="width:100%;padding:8px;margin-top:4px;background:none;border:none;color:var(--gray-4);cursor:pointer;font-size:12px">← Back</button>`;setTimeout(mountStripe,50);}
+  else if(ckStep===3){c.innerHTML=`<div style="text-align:center;padding:8px 0"><div style="width:56px;height:56px;background:var(--pink);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div><h3 style="text-align:center">Policy Confirmed</h3><div class="m-sub" style="text-align:center">Your insurance is now active.</div><div style="background:var(--gray-7);border-radius:10px;padding:14px;margin:14px 0;text-align:left"><div style="font-size:10px;color:var(--gray-3)">Policy Number</div><div style="font-weight:700;font-size:16px;color:var(--pink)">${ckData.polId||'HCI...'}</div><div style="font-size:11px;color:var(--gray-3);margin-top:4px">Sent to <strong>${ckData.em}</strong></div></div><button class="btn-full" onclick="closeM('checkout');cart=[];saveCart();updateCart()">Done</button></div>`;}
 }
-
-function renderFAQs() {
-  document.getElementById('faqList').innerHTML = faqs.map((f,i)=>`
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-question">${f.q}<span>+</span></div>
-      <div class="faq-answer">${f.a}</div>
-    </div>
-  `).join('');
-}
-
-// ===== AUTH FUNCTIONS =====
-function updateAuthUI() {
-  if (user) {
-    document.getElementById('authButtons').style.display = 'none';
-    document.getElementById('userMenu').style.display = 'block';
-    document.getElementById('userMenuName').textContent = `Hi, ${user.firstName || user.name || 'User'}!`;
-    document.getElementById('mobileAuthSection').innerHTML = `
-      <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:8px">Logged in as <strong style="color:var(--accent)">${user.email}</strong></p>
-      <div class="mobile-auth-btns">
-        <button class="mob-login" onclick="openPoliciesModal();closeMobileMenu()">My Policies</button>
-        <button class="mob-signup" onclick="logout()">Log Out</button>
-      </div>`;
-  } else {
-    document.getElementById('authButtons').style.display = 'flex';
-    document.getElementById('userMenu').style.display = 'none';
-    document.getElementById('mobileAuthSection').innerHTML = `
-      <div class="mobile-auth-btns">
-        <button class="mob-login" onclick="openModal('login');closeMobileMenu()">Log In</button>
-        <button class="mob-signup" onclick="openModal('signup');closeMobileMenu()">Sign Up</button>
-      </div>`;
-  }
-}
-
-async function handleLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const errEl = document.getElementById('loginError');
-  const btn = document.getElementById('loginBtn');
-  errEl.textContent = '';
-  if (!email || !password) { errEl.textContent = 'Please fill all fields.'; return; }
-  btn.disabled = true; btn.innerHTML = '<div class="spinner"><span></span><span></span><span></span></div>';
-  try {
-    const res = await fetch(`${BACKEND_URL}/auth/login`, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-    user = data.user;
-    localStorage.setItem('hecharr_ins_user', JSON.stringify(user));
-    if (data.session) localStorage.setItem('hecharr_ins_token', data.session.access_token);
-    closeModal('login');
-    updateAuthUI();
-    showToast('👋', `Welcome back, ${user.firstName || user.name}!`, 'success');
-  } catch (err) {
-    errEl.textContent = err.message;
-  }
-  btn.disabled = false; btn.textContent = 'Log In';
-}
-
-async function handleSignup() {
-  const firstName = document.getElementById('signupFirst').value.trim();
-  const lastName = document.getElementById('signupLast').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const phone = document.getElementById('signupPhone').value.trim();
-  const password = document.getElementById('signupPassword').value;
-  const errEl = document.getElementById('signupError');
-  const btn = document.getElementById('signupBtn');
-  errEl.textContent = '';
-  if (!email || !password) { errEl.textContent = 'Email and password required.'; return; }
-  if (password.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; return; }
-  btn.disabled = true; btn.innerHTML = '<div class="spinner"><span></span><span></span><span></span></div>';
-  try {
-    const res = await fetch(`${BACKEND_URL}/auth/signup`, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ email, password, firstName, lastName, phone })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-    user = data.user;
-    localStorage.setItem('hecharr_ins_user', JSON.stringify(user));
-    if (data.session) localStorage.setItem('hecharr_ins_token', data.session.access_token);
-    closeModal('signup');
-    updateAuthUI();
-    showToast('🎉', `Welcome, ${user.firstName || user.name}! Account created.`, 'success');
-  } catch (err) {
-    errEl.textContent = err.message;
-  }
-  btn.disabled = false; btn.textContent = 'Create Account';
-}
-
-function logout() {
-  user = null;
-  localStorage.removeItem('hecharr_ins_user');
-  localStorage.removeItem('hecharr_ins_token');
-  updateAuthUI();
-  document.getElementById('userDropdown').classList.remove('open');
-  showToast('👋', 'Logged out successfully.', 'success');
-}
-
-// ===== QUOTE MODAL =====
-function openQuoteModal(type) {
-  currentQuoteType = type;
-  selectedQuotePlan = null;
-  const product = insuranceProducts.find(p => p.id === type);
-  const content = document.getElementById('quoteContent');
-  
-  let formFields = '';
-  switch(type) {
-    case 'car': case 'two-wheeler': case 'commercial':
-      formFields = `
-        <div class="form-group"><label class="form-label">Vehicle Registration No</label><input class="form-input" id="quoteVehicleReg" placeholder="KA01AB1234"></div>
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Vehicle Value (₹)</label><input class="form-input" id="quoteVehicleValue" type="number" placeholder="500000"></div>
-          <div class="form-group"><label class="form-label">Year of Purchase</label><input class="form-input" id="quoteYear" type="number" placeholder="2022"></div>
-        </div>`;
-      break;
-    case 'health': case 'super-topup':
-      formFields = `
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Your Age</label><input class="form-input" id="quoteAge" type="number" placeholder="30"></div>
-          <div class="form-group"><label class="form-label">Cover Amount (₹)</label><input class="form-input" id="quoteCoverAmount" type="number" placeholder="500000"></div>
-        </div>
-        <div class="form-group"><label class="form-label">Members to Cover</label><input class="form-input" id="quoteMembers" type="number" placeholder="2" value="1"></div>`;
-      break;
-    case 'travel':
-      formFields = `
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Destination</label><input class="form-input" id="quoteDest" placeholder="Europe"></div>
-          <div class="form-group"><label class="form-label">Trip Duration (Days)</label><input class="form-input" id="quoteTripDays" type="number" placeholder="14"></div>
-        </div>`;
-      break;
-    case 'home': case 'shop':
-      formFields = `
-        <div class="form-group"><label class="form-label">Property Value (₹)</label><input class="form-input" id="quotePropertyValue" type="number" placeholder="5000000"></div>
-        <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="quoteLocation" placeholder="Bengaluru, Karnataka"></div>`;
-      break;
-    case 'life':
-      formFields = `
-        <div class="form-row">
-          <div class="form-group"><label class="form-label">Your Age</label><input class="form-input" id="quoteAge" type="number" placeholder="30"></div>
-          <div class="form-group"><label class="form-label">Cover Amount (₹)</label><input class="form-input" id="quoteCoverAmount" type="number" placeholder="10000000"></div>
-        </div>`;
-      break;
-  }
-
-  content.innerHTML = `
-    <div class="modal-title">${product.emoji} ${product.name}</div>
-    <div class="modal-sub">Get a personalised quote in seconds</div>
-    ${formFields}
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" id="quoteName" placeholder="Full Name" value="${user ? (user.firstName+' '+user.lastName).trim() : ''}"></div>
-      <div class="form-group"><label class="form-label">Mobile</label><input class="form-input" id="quotePhone" type="tel" placeholder="+91 9876543210" value="${user?.phone || ''}"></div>
-    </div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="quoteEmail" type="email" placeholder="you@example.com" value="${user?.email || ''}"></div>
-    <div id="quoteError" class="error-msg"></div>
-    <button class="btn-modal" onclick="getQuote()">Get Free Quote →</button>
-    <div id="quoteResults"></div>
-  `;
-  openModal('quote');
-}
-
-async function getQuote() {
-  const errEl = document.getElementById('quoteError');
-  errEl.textContent = '';
-  
-  let details = {};
-  switch(currentQuoteType) {
-    case 'car': case 'two-wheeler': case 'commercial':
-      details = { vehicleValue: +document.getElementById('quoteVehicleValue')?.value || 500000 };
-      break;
-    case 'health': case 'super-topup': case 'life':
-      details = { age: +document.getElementById('quoteAge')?.value || 30, coverAmount: +document.getElementById('quoteCoverAmount')?.value || 500000 };
-      break;
-    case 'travel':
-      details = { tripDays: +document.getElementById('quoteTripDays')?.value || 14 };
-      break;
-    case 'home': case 'shop':
-      details = { propertyValue: +document.getElementById('quotePropertyValue')?.value || 5000000, shopValue: +document.getElementById('quotePropertyValue')?.value || 5000000 };
-      break;
-  }
-
-  // Simulate quote calculation (use backend in production)
-  const plans = calculateLocalQuote(currentQuoteType, details);
-  
-  const resultsEl = document.getElementById('quoteResults');
-  resultsEl.innerHTML = `
-    <div style="margin-top:24px;padding-top:20px;border-top:2px solid var(--border)">
-      <div style="font-family:var(--heading);font-size:20px;font-weight:700;margin-bottom:16px">Choose Your Plan</div>
-      <div class="quote-plans">
-        ${plans.map((p,i) => `
-          <div class="quote-plan ${i===1?'selected':''}" onclick="selectQuotePlan(${i}, this)" data-index="${i}">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div class="quote-plan-name">${p.name}</div>
-                <div style="font-size:12px;color:var(--text-mid)">Cover: ₹${(p.cover/100000).toFixed(1)} Lakh</div>
-              </div>
-              <div class="quote-plan-price">₹${p.premium.toLocaleString()}<span>/yr</span></div>
-            </div>
-            <div class="quote-plan-features">${p.features.map(f=>`<div>✓ ${f}</div>`).join('')}</div>
-          </div>
-        `).join('')}
-      </div>
-      <button class="btn-modal" style="margin-top:16px" onclick="proceedToCheckout()">Buy Now — Secure Payment →</button>
-    </div>
-  `;
-  selectedQuotePlan = plans[1]; // Default to standard
-}
-
-function calculateLocalQuote(type, details) {
-  let base = 0, cover = 0;
-  switch(type) {
-    case 'car': base = (details.vehicleValue||500000)*0.03; cover = details.vehicleValue||500000; break;
-    case 'two-wheeler': base = (details.vehicleValue||80000)*0.02; cover = details.vehicleValue||80000; break;
-    case 'commercial': base = (details.vehicleValue||1000000)*0.04; cover = details.vehicleValue||1000000; break;
-    case 'health': case 'super-topup': base = (details.coverAmount||500000)*0.025; cover = details.coverAmount||500000; if(details.age>45) base*=1.5; break;
-    case 'travel': base = (details.tripDays||14)*150; cover = 500000; break;
-    case 'home': base = (details.propertyValue||5000000)*0.005; cover = details.propertyValue||5000000; break;
-    case 'shop': base = (details.shopValue||2000000)*0.008; cover = details.shopValue||2000000; break;
-    case 'life': base = (details.coverAmount||10000000)*0.015; cover = details.coverAmount||10000000; if(details.age>40) base*=1.3; break;
-  }
-  return [
-    {name:'Basic', premium:Math.round(base*0.7), cover, features:['Third Party Cover','Basic Support','Email Claims']},
-    {name:'Standard', premium:Math.round(base), cover, features:['Comprehensive Cover','Roadside Assistance','24/7 Support','Online Claims']},
-    {name:'Premium', premium:Math.round(base*1.4), cover:Math.round(cover*1.5), features:['Full Cover','Zero Depreciation','Priority Claims','Personal Manager','Unlimited Roadside']}
-  ];
-}
-
-function selectQuotePlan(index, el) {
-  document.querySelectorAll('.quote-plan').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-  const plans = calculateLocalQuote(currentQuoteType, {});
-  selectedQuotePlan = plans[index] || plans[1];
-}
-
-function proceedToCheckout() {
-  if (!selectedQuotePlan) { showToast('⚠️','Please select a plan.','error'); return; }
-  if (!user) { closeModal('quote'); openModal('login'); showToast('🔒','Please log in to purchase a policy.',''); return; }
-  closeModal('quote');
-  
-  const product = insuranceProducts.find(p => p.id === currentQuoteType);
-  const content = document.getElementById('checkoutContent');
-  content.innerHTML = `
-    <div class="modal-title">Complete Purchase 🛡️</div>
-    <div class="modal-sub">${product.name} — ${selectedQuotePlan.name} Plan</div>
-    <div style="background:var(--bg);border-radius:8px;padding:16px;margin-bottom:20px;border:1px solid var(--border)">
-      <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:4px"><span>${product.name}</span><span>${selectedQuotePlan.name}</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;color:var(--primary);padding-top:8px;border-top:1px solid var(--border);margin-top:8px">
-        <span>Annual Premium</span><span>₹${selectedQuotePlan.premium.toLocaleString()}</span>
-      </div>
-    </div>
-    <div class="form-group"><label class="form-label">Cardholder Name</label><input class="form-input" id="ckName" value="${user.name || ''}" placeholder="Name on card"></div>
-    <div class="form-group"><label class="form-label">Card Details</label><div id="stripe-card-element"></div><div id="stripe-card-errors"></div></div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--text-light);margin:12px 0">🔒 Secured by Stripe — 256-bit SSL Encryption</div>
-    <button class="btn-modal" id="payBtn" onclick="handlePayment()">Pay ₹${selectedQuotePlan.premium.toLocaleString()} →</button>
-  `;
-  openModal('checkout');
-  initStripe();
-}
+function ck1(){ckData.fn=document.getElementById('ckFn').value.trim();ckData.ln=document.getElementById('ckLn').value.trim();ckData.em=document.getElementById('ckEm').value.trim();ckData.ph=document.getElementById('ckPh').value.trim();if(!ckData.fn){toast('First name required','','err');return;}if(!ckData.em||!/\S+@\S+\.\S+/.test(ckData.em)){toast('Valid email required','','err');return;}ckStep=2;renderCk();}
 
 // ===== STRIPE =====
-let stripeInstance, cardElement;
-function initStripe() {
-  try {
-    stripeInstance = Stripe(STRIPE_PUBLISHABLE_KEY);
-    const elements = stripeInstance.elements();
-    cardElement = elements.create('card', {
-      style: { base: { fontSize: '15px', color: '#1A1A2E', '::placeholder': { color: '#8A8A9E' } } }
-    });
-    cardElement.mount('#stripe-card-element');
-    cardElement.on('change', e => {
-      document.getElementById('stripe-card-errors').textContent = e.error ? e.error.message : '';
-    });
-  } catch(e) { console.error('Stripe init error:', e); }
+function mountStripe(){try{stripe=Stripe(STRIPE_PK);const el=stripe.elements();cardEl=el.create('card',{style:{base:{fontSize:'14px',color:'#09090B','::placeholder':{color:'#A1A1AA'}}}});cardEl.mount('#stripe-card-element');cardEl.on('change',e=>{document.getElementById('stripe-card-errors').textContent=e.error?e.error.message:'';});}catch(e){document.getElementById('stripe-card-errors').textContent='Stripe init failed. Check publishable key.';}}
+
+async function doPay(){
+  const btn=document.getElementById('payBtn'),{tot}=ckTotals(),errEl=document.getElementById('stripe-card-errors');
+  btn.disabled=true;btn.innerHTML='<div class="spinner"><i></i><i></i><i></i></div> Processing...';errEl.textContent='';
+  try{
+    if(!STRIPE_PK||STRIPE_PK.includes('YOUR_KEY'))throw new Error('Set STRIPE_PUBLISHABLE_KEY in config.');
+    if(!API||API.includes('your-'))throw new Error('Set BACKEND_URL (API) in config to your deployed backend.');
+    if(!stripe||!cardEl)throw new Error('Stripe not initialized. Refresh and retry.');
+    let res,data;
+    try{res=await fetch(`${API}/create-payment-intent`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:tot*100,currency:'INR',customer:{email:ckData.em,firstName:ckData.fn,lastName:ckData.ln,phone:ckData.ph},policyType:cart.map(i=>i.pid).join(','),planDetails:cart.map(i=>({name:i.plan,product:i.name,price:i.price}))})});data=await res.json();}catch(fe){throw new Error('Cannot reach payment server. Check BACKEND_URL. ('+fe.message+')');}
+    if(!res.ok)throw new Error(data?.error||'Server error HTTP '+res.status);
+    if(!data.clientSecret||typeof data.clientSecret!=='string'||!data.clientSecret.startsWith('pi_'))throw new Error('Invalid server response. Check STRIPE_SECRET_KEY in Vercel env vars.');
+    const{error}=await stripe.confirmCardPayment(data.clientSecret,{payment_method:{card:cardEl,billing_details:{name:`${ckData.fn} ${ckData.ln}`.trim(),email:ckData.em}}});
+    if(error)throw new Error(error.message);
+    try{const sr=await fetch(`${API}/save-policy`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${localStorage.getItem('hi_tok')||''}`},body:JSON.stringify({paymentIntentId:data.paymentIntentId,customer:{email:ckData.em,firstName:ckData.fn,lastName:ckData.ln,phone:ckData.ph},policyType:cart[0]?.pid,planDetails:{name:cart[0]?.plan,items:cart},total:tot,currency:'INR',authUserId:user?.id})});const sd=await sr.json();ckData.polId=sd.policyId||('HCI'+Date.now().toString(36).toUpperCase());}catch(se){ckData.polId='HCI'+Date.now().toString(36).toUpperCase();}
+    ckStep=3;renderCk();toast('Payment successful','','ok');
+  }catch(err){errEl.textContent=err.message;}
+  btn.disabled=false;btn.innerHTML=`Pay ${fmt(tot)}`;
 }
 
-async function handlePayment() {
-  const btn = document.getElementById('payBtn');
-  btn.disabled = true; btn.innerHTML = '<div class="spinner"><span></span><span></span><span></span></div> Processing...';
-  
-  try {
-    // Create payment intent
-    const res = await fetch(`${BACKEND_URL}/create-payment-intent`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        amount: selectedQuotePlan.premium * 100, // paise
-        currency: 'INR',
-        customer: { email: user.email, firstName: user.firstName, lastName: user.lastName },
-        policyType: currentQuoteType,
-        planDetails: selectedQuotePlan
-      })
-    });
-    const { clientSecret, paymentIntentId } = await res.json();
+// ===== AUTH =====
+function openM(n){const e=document.getElementById(n+'Err')||document.getElementById(n.charAt(0)+'Err');if(e)e.textContent='';document.getElementById(n+'Modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeM(n){document.getElementById(n+'Modal').classList.remove('open');document.body.style.overflow='';}
+function swapM(a,b){closeM(a);setTimeout(()=>openM(b),200);}
+function toggleMobile(){document.getElementById('mMenu').classList.toggle('open');document.getElementById('mBtn').classList.toggle('open');}
+function closeMobile(){document.getElementById('mMenu').classList.remove('open');document.getElementById('mBtn').classList.remove('open');}
+document.addEventListener('click',()=>{document.getElementById('uDD')?.classList.remove('open');});
 
-    // Confirm payment
-    const { error, paymentIntent } = await stripeInstance.confirmCardPayment(clientSecret, {
-      payment_method: { card: cardElement, billing_details: { name: document.getElementById('ckName').value, email: user.email } }
-    });
-
-    if (error) throw new Error(error.message);
-
-    // Save policy
-    await fetch(`${BACKEND_URL}/save-policy`, {
-      method:'POST', headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${localStorage.getItem('hecharr_ins_token')}`},
-      body: JSON.stringify({
-        paymentIntentId,
-        customer: user,
-        policyType: currentQuoteType,
-        planDetails: selectedQuotePlan,
-        total: selectedQuotePlan.premium,
-        currency: 'INR',
-        authUserId: user.id
-      })
-    });
-
-    closeModal('checkout');
-    showToast('🎉', 'Policy purchased successfully! Check your email for details.', 'success');
-  } catch(err) {
-    document.getElementById('stripe-card-errors').textContent = err.message;
-  }
-  btn.disabled = false; btn.textContent = `Pay ₹${selectedQuotePlan.premium.toLocaleString()} →`;
+function updateAuth(){
+  document.getElementById('authBtns').style.display=user?'none':'flex';
+  document.getElementById('userArea').style.display=user?'block':'none';
+  if(user){document.getElementById('uAvatar').textContent=(user.firstName||user.email||'H')[0].toUpperCase();document.getElementById('uName').textContent=user.firstName||'Hi';}
+  document.getElementById('mAuth').innerHTML=user?`<p style="color:var(--gray-4);font-size:13px;margin-bottom:8px">${user.email}</p><div class="m-menu-btns"><button class="m-btn-out" onclick="openPolicies();closeMobile()">Policies</button><button class="m-btn-fill" onclick="logout()">Log out</button></div>`:`<div class="m-menu-btns"><button class="m-btn-out" onclick="openM('login');closeMobile()">Log in</button><button class="m-btn-fill" onclick="openM('signup');closeMobile()">Sign up</button></div>`;
 }
 
-// ===== MY POLICIES =====
-async function openPoliciesModal() {
-  document.getElementById('userDropdown').classList.remove('open');
-  const content = document.getElementById('policiesContent');
-  content.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-mid)"><div class="spinner" style="color:var(--primary)"><span></span><span></span><span></span></div> Loading...</div>';
-  openModal('policies');
-  try {
-    const token = localStorage.getItem('hecharr_ins_token');
-    const res = await fetch(`${BACKEND_URL}/my-policies`, { headers: { 'Authorization': `Bearer ${token}` } });
-    const data = await res.json();
-    if (data.policies?.length) {
-      content.innerHTML = data.policies.map(p => `
-        <div class="policy-card">
-          <div class="policy-card-header">
-            <span class="policy-id">${p.policy_id}</span>
-            <span class="policy-status ${p.status}">${p.status}</span>
-          </div>
-          <div class="policy-detail"><strong>${p.policy_type}</strong> — ${p.plan_name} Plan</div>
-          <div class="policy-detail">Premium: ₹${p.premium_amount?.toLocaleString()} | Cover: ₹${(p.plan_details?.cover/100000)?.toFixed(1) || '—'} Lakh</div>
-          <div class="policy-detail" style="font-size:11px;color:var(--text-light)">Valid: ${new Date(p.start_date).toLocaleDateString()} — ${new Date(p.end_date).toLocaleDateString()}</div>
-        </div>
-      `).join('');
-    } else {
-      content.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-mid)">No policies found. <a class="modal-link" onclick="closeModal(\'policies\');document.getElementById(\'products\').scrollIntoView({behavior:\'smooth\'})">Explore plans →</a></div>';
-    }
-  } catch(err) {
-    content.innerHTML = '<div style="text-align:center;padding:20px;color:var(--danger)">Could not load policies. Please try again.</div>';
-  }
+async function doLogin(){
+  const em=document.getElementById('lEmail').value.trim(),pw=document.getElementById('lPass').value,err=document.getElementById('lErr'),btn=document.getElementById('lBtn');
+  err.textContent='';if(!em||!pw){err.textContent='Enter email and password.';return;}
+  btn.disabled=true;btn.innerHTML='<div class="spinner"><i></i><i></i><i></i></div>';
+  try{const gc=[...cart];const r=await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,password:pw})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Login failed.');
+  user=d.user;localStorage.setItem('hi_user',JSON.stringify(user));if(d.session)localStorage.setItem('hi_tok',d.session.access_token);cart=loadCart();gc.forEach(g=>{if(!cart.find(i=>i.id===g.id))cart.push(g);});localStorage.removeItem('hi_c_g');saveCart();
+  closeM('login');updateAuth();updateCart();toast(`Welcome, ${user.firstName||'back'}!`,'','ok');}catch(e){err.textContent=e.message;}
+  btn.disabled=false;btn.textContent='Log In';
 }
 
-// ===== UTILS =====
-function openModal(name) { document.getElementById(name+'Modal').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeModal(name) { document.getElementById(name+'Modal').classList.remove('open'); document.body.style.overflow=''; }
-function switchModal(from, to) { closeModal(from); setTimeout(()=>openModal(to), 200); }
-function toggleUserMenu(e) { e.stopPropagation(); document.getElementById('userDropdown').classList.toggle('open'); }
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const btn = document.getElementById('hamburgerBtn');
-  menu.classList.toggle('open'); btn.classList.toggle('open');
-}
-function closeMobileMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.getElementById('hamburgerBtn').classList.remove('open'); }
-document.addEventListener('click', () => { document.getElementById('userDropdown')?.classList.remove('open'); });
-
-function showToast(icon, msg, type='') {
-  const container = document.getElementById('toastContainer');
-  const toast = document.createElement('div');
-  toast.className = 'toast ' + type;
-  toast.innerHTML = `<span>${icon}</span> ${msg}`;
-  container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(100%)'; setTimeout(()=>toast.remove(),300); }, 3500);
+async function doSignup(){
+  const fn=document.getElementById('sFirst').value.trim(),ln=document.getElementById('sLast').value.trim(),em=document.getElementById('sEmail').value.trim(),ph=document.getElementById('sPhone').value.trim(),pw=document.getElementById('sPass').value,err=document.getElementById('sErr'),btn=document.getElementById('sBtn');
+  err.textContent='';if(!fn||!em||!pw){err.textContent='Name, email, password required.';return;}if(pw.length<8){err.textContent='Password 8+ chars.';return;}
+  btn.disabled=true;btn.innerHTML='<div class="spinner"><i></i><i></i><i></i></div>';
+  try{const gc=[...cart];const r=await fetch(`${API}/auth/signup`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,password:pw,firstName:fn,lastName:ln,phone:ph})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Signup failed.');
+  user=d.user;localStorage.setItem('hi_user',JSON.stringify(user));if(d.session)localStorage.setItem('hi_tok',d.session.access_token);cart=[...gc];localStorage.removeItem('hi_c_g');saveCart();
+  closeM('signup');updateAuth();updateCart();toast(`Welcome, ${fn}!`,'','ok');}catch(e){err.textContent=e.message;}
+  btn.disabled=false;btn.textContent='Create Account';
 }
 
-// ===== INIT =====
-renderMarquee();
-renderProducts();
-renderWhy();
-renderReviews();
-renderFAQs();
-updateAuthUI();
+function logout(){saveCart();user=null;localStorage.removeItem('hi_user');localStorage.removeItem('hi_tok');document.getElementById('uDD').classList.remove('open');cart=loadCart();updateAuth();updateCart();toast('Logged out','','');}
+
+async function openPolicies(){
+  document.getElementById('uDD').classList.remove('open');openM('pol');
+  const c=document.getElementById('polContent');c.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray-4)"><div class="spinner"><i></i><i></i><i></i></div></div>';
+  try{const t=localStorage.getItem('hi_tok');if(!t)throw new Error('Please log in.');
+  const r=await fetch(`${API}/my-policies`,{headers:{'Authorization':`Bearer ${t}`}});const d=await r.json();
+  if(!d.policies?.length){c.innerHTML='<div style="text-align:center;padding:24px;color:var(--gray-3)">No policies. <a class="f-link" onclick="closeM(\'pol\');document.getElementById(\'products\').scrollIntoView({behavior:\'smooth\'})">Explore →</a></div>';return;}
+  c.innerHTML=d.policies.map(p=>`<div class="pol-card"><div class="pol-top"><span class="pol-id">${p.policy_id}</span><span class="pol-badge ${p.status}">${p.status}</span></div><div class="pol-detail"><strong>${(p.policy_type||'').replace(/-/g,' ')}</strong> — ${p.plan_name}</div><div class="pol-detail">${fmt(p.premium_amount)}</div><div class="pol-detail" style="font-size:10px;color:var(--gray-4)">${new Date(p.start_date).toLocaleDateString('en-IN')} — ${new Date(p.end_date).toLocaleDateString('en-IN')}</div></div>`).join('');
+  }catch(e){c.innerHTML=`<div style="text-align:center;padding:20px;color:var(--danger)">${e.message}</div>`;}
+}
+
+function toast(msg,icon,type){const c=document.getElementById('toasts'),t=document.createElement('div');t.className='toast '+(type||'');t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(100%)';setTimeout(()=>t.remove(),300);},3000);}
+
+// INIT
+renderTabs();renderProducts();renderReviews();renderFAQs();updateAuth();updateCart();
 </script>
 </body>
 </html>
